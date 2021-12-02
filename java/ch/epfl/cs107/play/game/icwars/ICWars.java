@@ -21,6 +21,26 @@ public class ICWars extends AreaGame{
     public final static float CAMERA_SCALE_FACTOR = 13.f;
 
 
+
+
+    /**
+     * Définition du camp allié ou ennemi
+     */
+    public enum ICWarsTeamSide{
+        ALLY(0),
+        ENEMY(1);
+
+
+        final int teamIndex;
+
+        ICWarsTeamSide(int teamIndex){
+            this.teamIndex = teamIndex;
+
+        }
+
+    }
+
+
     /*
     /**
      * Add all the areas

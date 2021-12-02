@@ -2,11 +2,12 @@ package ch.epfl.cs107.play.game.icwars.area;
 
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
-import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.window.Window;
 
 
 /**
- * Classe ICWarsBehavior:
+ * Classe ICWarsBehavior :
  * Cette classe sert à gérer le comportement d'une area.
  */
 public class ICWarsBehavior extends AreaBehavior {
@@ -67,6 +68,27 @@ public class ICWarsBehavior extends AreaBehavior {
 
 
     /**
+     * Constructeur par défaut de la classe ICWarsBehavior
+     * @param window correspond à la fenêtre sur laquelle va s'afficher le jeu
+     * @param name correspond au nom du fichier de l'image behavior où l'on va trouver le type des cases
+     */
+    public ICWarsBehavior(Window window, String name){
+        //On appelle le constructeur de la classe AreaBehavior
+        super(window, name);
+        //On récupère les dimensions de la fenêtre
+        int height = getHeight();
+        int width = getWidth();
+        //On associe le type aux cellules
+        for (int y = 0; y<height; y++){
+            for (int x = 0; x<width; x++){
+                ICWarsCellType color = ICWarsCellType.toType(getRGB(height-1-y,x));
+                setCell(x,y, new ICWarsCell(x,y,color));
+            }
+        }
+    }
+
+
+    /**
      * Classe ICWarsCell
      * Définit les cellules des aires de jeu que l'on utilise dans le jeu ICWars
      */
@@ -87,6 +109,12 @@ public class ICWarsBehavior extends AreaBehavior {
             this.type = type;
         }
 
+
+        /**
+         * Méthode canEnter : définit si l'acteur principal, le curseur, peut entrer ou non dans une cellule.
+         * @param entity (Interactable), not null : Ce paramètre correspond à l'acteur qui veut entrer
+         * @return true ou false, selon si l'on peut ou non entrer dans la cellule.
+         */
         @Override
         protected boolean canEnter(Interactable entity){
             /*
@@ -105,6 +133,47 @@ public class ICWarsBehavior extends AreaBehavior {
             }
         }
 
+        /**
+         *Cette méthode détermine si l'on peut ou pas quitter une cellule
+         * @param entity (Interactable), not null Ce paramètre correspond à l'acteur (curseur en principe)
+         * @return true ou false selon si on peut ou non quitter la cellule.
+         */
+        @Override
+        protected boolean canLeave(Interactable entity){
+            //Pour le moment, j'ai mis que l'on peut toujours quitter la cellule
+            //Ce sera très probablement à modifier par la suite.
+            return true;
+        }
+
+        /**
+         * Méthode isCellInteractable
+         * @return : retourne true si on peut interagir avec la cellule.
+         */
+        @Override
+        public boolean isCellInteractable(){
+            //retourne true tout le temps pour le moment, à modifier
+            return true;
+        }
+
+        /**
+         * Méthode isViewInteractable
+         * @return : retourne true si l'on peut interagir à distance avec la cellule.
+         */
+        @Override
+        public boolean isViewInteractable() {
+            //Pour le moment, la méthode retourne false tout le temps, à modifier.
+            return false;
+        }
+
+        /**
+         * Méthode acceptInteraction
+         * Cette méthode définit ce qu'il se passe si l'on accepte l'interaction (à vérifier)
+         * @param v (AreaInteractionVisitor) : the visitor Le paramètre est le visiteur qui veut interagir (donc l'interacteur)
+         */
+        @Override
+        public void acceptInteraction(AreaInteractionVisitor v) {
+            //Méthode à définir
+        }
 
 
 
