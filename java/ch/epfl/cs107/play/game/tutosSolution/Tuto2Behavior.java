@@ -7,6 +7,8 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class Tuto2Behavior extends AreaBehavior {
+
+
 	public enum Tuto2CellType{
 		//https://stackoverflow.com/questions/25761438/understanding-bufferedimage-getrgb-output-values
 		NULL(0, false),

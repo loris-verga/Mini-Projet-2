@@ -26,26 +26,16 @@ public class ICWars extends AreaGame{
     /**
      * Définition du camp allié ou ennemi
      */
-    public enum ICWarsTeamSide{
-        ALLY(0),
-        ENEMY(1);
 
-
-        final int teamIndex;
-
-        ICWarsTeamSide(int teamIndex){
-            this.teamIndex = teamIndex;
-
-        }
-
-    }
 
 
     /*
     /**
      * Add all the areas
      */
+
     private void createAreas(){
+        //TODO je sais pas
 
     }
 
