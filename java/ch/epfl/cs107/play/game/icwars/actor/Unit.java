@@ -2,22 +2,24 @@ package ch.epfl.cs107.play.game.icwars.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.window.Canvas;
 
 import java.lang.annotation.Documented;
 
 public abstract class Unit extends ICWarsActor{
 
-    final private String unitName;
 
     //La valeur d'unitHp doit être positive et a une valeur maximale
     private float unitHp;
-    final private float unitHpMax;
+    private float unitHpMax;
 
-    final private Sprite sprite;
+    private Sprite sprite;
 
     //Le rayon de déplacement de l'unité (par tour)
-    final private int movementRadius;
+    private int movementRadius;
 
 
     /**
@@ -25,27 +27,29 @@ public abstract class Unit extends ICWarsActor{
      * @param unitTeamSide
      * @param areaOwner
      * @param coordinates
-     * @param unitName
      * @param unitHpMax
-     * @param sprite
      * @param movementRadius
      */
-    public Unit(ICWarsTeamSide unitTeamSide, Area areaOwner, DiscreteCoordinates coordinates, String unitName, float unitHpMax, Sprite sprite, int movementRadius){
+    public Unit(ICWarsTeamSide unitTeamSide, Area areaOwner, DiscreteCoordinates coordinates, float unitHpMax, int movementRadius){
 
         super(unitTeamSide, areaOwner, coordinates);
 
         this.unitHpMax = unitHpMax;
         unitHp = unitHpMax;
 
-        this.unitName = unitName;
-
-        //TODO Initialisation de Sprite juste ?
-        this.sprite = sprite;
 
         this.movementRadius = movementRadius;
 
 
 
+    }
+
+    /**
+     * Constructeur du sprite
+     * @param nameSprite
+     */
+    public void setSprite(String nameSprite){
+        this.sprite = new Sprite(nameSprite, 1.5f, 1.5f, this, null, new Vector(-0.25f, -0.25f));
     }
 
 
@@ -75,18 +79,17 @@ public abstract class Unit extends ICWarsActor{
     /**
      * Méthode getDamage: permet de pouvoir infliger un nombre fixe de dommage à chaque attaque.
      * On ne définit pas la méthode à ce niveau d'abstraction, car le nombre de dommages infligeable dépend de l'unité.
+     * @return le nombre de dégats que l'on peut faire
      */
-    public abstract void getDamage();
+    public abstract float getDamage();
 
 
     /**
      * Fonction getName
      * @return retourne le nom de l'unité
      */
-    @Override
-    public String getName(){
-        return unitName;
-    }
+
+    public abstract String getName();
 
     /**
      * Fonction getHp
@@ -135,6 +138,23 @@ public abstract class Unit extends ICWarsActor{
      */
     @Override
     public boolean isViewInteractable(){ return false;}
+
+
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v){
+        //TODO
+    }
+
+
+    /**
+     * méthode draw: permet de dessiner le sprite associé à l'unité
+     * @param canvas target, not null
+     */
+    @Override
+    public void draw(Canvas canvas){
+        sprite.draw(canvas);
+    }
 
 
 

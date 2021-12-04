@@ -123,6 +123,10 @@ public class ICWarsBehavior extends AreaBehavior {
             Cet accès va probablement être restreint selon le nombre d'étoile de la cellule (ou de l'acteur qui l'occupe?)
             Cela a à voir également avec le fait qu'un acteur peut prendre l'espace
             => Revoir la fonction takeCellSpace
+
+
+            Update(4.12.2021) https://piazza.com/class/ktijhp746sr283?cid=570
+
              */
             if (false) {
                 return false;
