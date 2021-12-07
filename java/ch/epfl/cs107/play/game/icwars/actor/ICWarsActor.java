@@ -51,8 +51,6 @@ public abstract class ICWarsActor extends MovableAreaEntity {
         super(owner, Orientation.UP, coordinates);
         this.teamSide = teamSide;
 
-
-
     }
 
 

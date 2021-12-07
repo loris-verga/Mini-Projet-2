@@ -5,8 +5,23 @@ package ch.epfl.cs107.play.game.icwars;
  * Importation des packages
  */
 
+import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
+import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
+import ch.epfl.cs107.play.game.icwars.actor.Soldats;
+import ch.epfl.cs107.play.game.icwars.actor.Tanks;
+import ch.epfl.cs107.play.game.icwars.actor.Unit;
+import ch.epfl.cs107.play.game.icwars.actor.players.RealPlayer;
+import ch.epfl.cs107.play.game.icwars.area.Level0;
+import ch.epfl.cs107.play.game.icwars.area.Level1;
+import ch.epfl.cs107.play.game.tutosSolution.actor.SimpleGhost;
+import ch.epfl.cs107.play.game.tutosSolution.area.tuto1.Ferme;
+import ch.epfl.cs107.play.game.tutosSolution.area.tuto1.Village;
 import ch.epfl.cs107.play.io.FileSystem;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.window.Button;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 
@@ -16,27 +31,20 @@ import ch.epfl.cs107.play.window.Window;
 
 public class ICWars extends AreaGame{
 
-
-
     public final static float CAMERA_SCALE_FACTOR = 13.f;
+    public final static float STEP = 0.05f;
 
+    private final String[] areas = {"icwars/Level0", "icwars/Level1"};
+    private static int areaIndex;
 
-
+    RealPlayer realPlayer;
 
     /**
-     * Définition du camp allié ou ennemi
+     * Ajouter les nouvelles aires
      */
-
-
-
-    /*
-    /**
-     * Add all the areas
-     */
-
     private void createAreas(){
-        //TODO je sais pas
-
+        addArea(new Level0());
+        addArea(new Level1());
     }
 
 
@@ -48,10 +56,15 @@ public class ICWars extends AreaGame{
      */
   @Override
     public boolean begin(Window window, FileSystem fileSystem) {
+      if (super.begin(window, fileSystem)) {
+          createAreas();
+          areaIndex = 0;
+          initArea();
 
-        return true;
-    }
-
+          return true;
+      }
+      return false;
+  }
 
     /**
      *
@@ -61,15 +74,40 @@ public class ICWars extends AreaGame{
     public void update(float deltaTime) {
         super.update(deltaTime);
 
+        Keyboard keyboard = getWindow().getKeyboard() ;
+
+        Button key = keyboard.get(Keyboard.N) ;
+        if (key.isDown()) {nextArea();}
+        key = keyboard.get(Keyboard.R) ;
+        if (key.isDown()) {}
     }
 
+    private void nextArea(){
+        areaIndex+=1;
+        realPlayer.leaveArea();
+        if (areaIndex <= areas.length - 1 ){initArea();}
+        else{end();}
+    }
+
+    private void initArea(){
+        //todo not sure if this is how you make realplayer an ally
+        Area area = setCurrentArea(areas[areaIndex], true);
+
+        ICWarsActor.ICWarsTeamSide teamSideRealPlayer= ICWarsActor.ICWarsTeamSide.ALLY;
+
+        Unit tank1 = new Tanks( area , new DiscreteCoordinates(2,5), teamSideRealPlayer);
+        Unit soldier1 = new Soldats( area, new DiscreteCoordinates(3,5), teamSideRealPlayer);
+
+        //todo I dont know if I need to use the enterAria is needed...
+        realPlayer = new RealPlayer(teamSideRealPlayer , area , new DiscreteCoordinates(0, 0), soldier1, tank1);
+        realPlayer.enterArea(area, new DiscreteCoordinates(0,0));
+    }
 
     /** Méthode end
      *
      */
     @Override
-    public void end() {
-    }
+    public void end() {System.out.println("GAME OVER");}
 
 
     /**
