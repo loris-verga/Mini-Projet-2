@@ -40,7 +40,7 @@ public class ICWars extends AreaGame{
     RealPlayer realPlayer;
 
     /**
-     * Ajouter les nouvelles aires
+     * methode createAreas initialise les nouvelles aires
      */
     private void createAreas(){
         addArea(new Level0());
@@ -67,7 +67,7 @@ public class ICWars extends AreaGame{
   }
 
     /**
-     *
+     * methode update voit si le joueur veux changer de niveau ou si il veut recommencer le jeu
      * @param deltaTime
      */
     @Override
@@ -77,14 +77,18 @@ public class ICWars extends AreaGame{
         Keyboard keyboard = getWindow().getKeyboard() ;
 
         Button key = keyboard.get(Keyboard.N) ;
-        if (key.isDown()) {nextArea();}
+        if (key.isPressed()) {nextArea();}
 
         key = keyboard.get(Keyboard.R) ;
-        if (key.isDown()) {
+        if (key.isPressed()) {
             areaIndex=0;
             initArea();
         }
     }
+
+    /**
+     * methode nextArea permet de passer a la prochaine aire dans le tableau areas
+     */
 
     private void nextArea(){
         areaIndex+=1;
@@ -93,8 +97,11 @@ public class ICWars extends AreaGame{
         else{end();}
     }
 
+    /**
+     * methode initArea permet d'initialiser l'aire qu'on se trouve avec les joueurs et ces units
+     */
+
     private void initArea(){
-        //todo not sure if this is how you make realplayer an ally
         Area area = setCurrentArea(areas[areaIndex], true);
 
         ICWarsActor.ICWarsTeamSide teamSideRealPlayer= ICWarsActor.ICWarsTeamSide.ALLY;
@@ -107,8 +114,8 @@ public class ICWars extends AreaGame{
         realPlayer.enterArea(area, new DiscreteCoordinates(PlayerCoordinatesForArea[areaIndex][0],PlayerCoordinatesForArea[areaIndex][1]));
     }
 
-    /** Méthode end
-     *
+    /**
+     * methode end permet de terminer le jeu
      */
     @Override
     public void end() {
@@ -118,7 +125,7 @@ public class ICWars extends AreaGame{
 
 
     /**
-     * Méthode getTitle:
+     * methode publique getTitle permet de trouver le titre de la classe
      * @return
      */
     @Override

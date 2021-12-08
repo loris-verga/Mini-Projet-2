@@ -11,18 +11,20 @@ import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.ArrayList;
 
-//todo commentary
+/**
+ * class abstraite ICWarsPlayer represente un joueur generique
+ */
 
 abstract class ICWarsPlayer extends ICWarsActor{
 
     public ArrayList<Unit> listOfUnits = new ArrayList<>();
 
     /**
-     *  constructor de la classe ICWarsPlayer
-     * @param teamSide
-     * @param area
-     * @param coordinates
-     * @param units
+     *  constructeur de la classe ICWarsPlayer
+     * @param teamSide : la faction du joueur
+     * @param area : l'aire ou se trouve le joueur
+     * @param coordinates : les coordonner initial du joueur
+     * @param units : les units qui appartient au joueur
      */
 
     ICWarsPlayer(ICWarsTeamSide teamSide, Area area, DiscreteCoordinates coordinates, Unit ... units){
@@ -34,12 +36,15 @@ abstract class ICWarsPlayer extends ICWarsActor{
               area.registerActor(unit);
 
         }
-        //todo check if this is correct and didn`t forget anything...
     }
 
+    /**
+     * methode update : enleve de l'aire et du tableau d'unites les unites qui sont mortes
+     * @param deltaTime
+     */
     @Override
     public void update(float deltaTime) {
-        ArrayList<Integer> listOfIndexToRemove= new ArrayList<Integer>();
+        ArrayList<Integer> listOfIndexToRemove= new ArrayList<>();
 
         for (int index=0; index < listOfUnits.size(); index++){
             Unit unit=listOfUnits.get(index);
@@ -48,12 +53,27 @@ abstract class ICWarsPlayer extends ICWarsActor{
                 listOfIndexToRemove.add(index);
             }
         }
-        for (int j=0; j < listOfIndexToRemove.size(); j++){listOfUnits.remove(listOfIndexToRemove.get(j));}
+        for (int j=0; j < listOfIndexToRemove.size(); j++){
+            listOfUnits.remove(listOfIndexToRemove.get(j));
+        }
 
-        //todo check if using an array is correct and if it can be shorter
         super.update(deltaTime);
-
     }
+
+    /**
+     * methode isPlayerDefeated regarde si le joueur n'a plus d'unite
+     * @return boolean
+     */
+    boolean isPlayerDefeated(){
+        if (listOfUnits.isEmpty()){return true;}
+        else {return false;}
+    }
+
+
+    /**
+     * methode centerCamera permet de centrer la camera sur le joueur
+     */
+    void centerCamera(){getOwnerArea().setViewCandidate(this);}
 
     @Override
     public boolean takeCellSpace() {
@@ -69,13 +89,5 @@ abstract class ICWarsPlayer extends ICWarsActor{
     public boolean isViewInteractable() {
         return true;
     }
-
-    void centerCamera(){getOwnerArea().setViewCandidate(this);}
-
-    boolean isPlayerDefeated(){
-        if (listOfUnits.isEmpty()){return true;}
-        else {return false;}
-    }
-
 
 }

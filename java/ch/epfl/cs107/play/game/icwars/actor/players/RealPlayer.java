@@ -15,16 +15,23 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public class RealPlayer extends ICWarsPlayer {
+/**
+ * class RealPlayer represente le joueur reel, qui peut utiliser avec le clavier pour jouer
+ */
 
-    //todo add comments once tested on part 1
+public class RealPlayer extends ICWarsPlayer {
 
     private Sprite sprite;
     private String associatedImage;
-    /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
-
+    /**
+     * constructeur de RealPlayer
+     * @param teamSide : faction du joueur
+     * @param owner : aire que se trouve le joueur
+     * @param coordinates : coordonner du joueur sur l'aire
+     * @param units : les unites qui appartiennent au joueur
+     */
     public RealPlayer(ICWarsTeamSide teamSide, Area owner, DiscreteCoordinates coordinates, Unit ... units) {
         super(teamSide ,owner, coordinates, units);
 
@@ -35,12 +42,16 @@ public class RealPlayer extends ICWarsPlayer {
     }
 
     /**
-     * Center the camera on the player
+     * methode centerCamera permet de centrer la camera sur le joueur
      */
     public void centerCamera() {
         getOwnerArea().setViewCandidate(this);
     }
 
+    /**
+     *  methode update permet de detecter les movements du joueur avec le clavier
+     * @param deltaTime
+     */
     @Override
     public void update(float deltaTime) {
 
@@ -55,7 +66,7 @@ public class RealPlayer extends ICWarsPlayer {
 
     }
     /**
-     * Orientate and Move this player in the given orientation if the given button is down
+     * methode moveIfPressed detect les touches du clavier pour orienter et faire bouger le joueur dans la bonne direction
      * @param orientation (Orientation): given orientation, not null
      * @param b (Button): button corresponding to the given orientation, not null
      */
@@ -69,16 +80,16 @@ public class RealPlayer extends ICWarsPlayer {
     }
 
     /**
-     * Leave an area by unregister this player
+     * methode leaveArea permet de desenregistrer des acteurs de l'aire
      */
     public void leaveArea(){
         getOwnerArea().unregisterActor(this);
     }
 
     /**
-     *
-     * @param area (Area): initial area, not null
-     * @param position (DiscreteCoordinates): initial position, not null
+     * methode enterArea permet de registrer le joueur et ses unites dans l'aire
+     * @param area (Area): aire initial, pas nulle
+     * @param position (DiscreteCoordinates): position original , pas nulle
      */
     public void enterArea(Area area, DiscreteCoordinates position){
         area.registerActor(this);
