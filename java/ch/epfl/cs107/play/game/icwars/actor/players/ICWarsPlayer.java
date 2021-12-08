@@ -41,10 +41,9 @@ abstract class ICWarsPlayer extends ICWarsActor{
     public void update(float deltaTime) {
         ArrayList<Integer> listOfIndexToRemove= new ArrayList<Integer>();
 
-        for (int index=0; index< listOfUnits.size(); index++){
+        for (int index=0; index < listOfUnits.size(); index++){
             Unit unit=listOfUnits.get(index);
-            float hp = unit.getHp();
-            if (hp<=0.f){
+            if (unit.isDead()){
                 getOwnerArea().unregisterActor(unit);
                 listOfIndexToRemove.add(index);
             }

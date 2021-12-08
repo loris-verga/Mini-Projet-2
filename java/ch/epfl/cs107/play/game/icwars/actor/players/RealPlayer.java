@@ -28,11 +28,7 @@ public class RealPlayer extends ICWarsPlayer {
     public RealPlayer(ICWarsTeamSide teamSide, Area owner, DiscreteCoordinates coordinates, Unit ... units) {
         super(teamSide ,owner, coordinates, units);
 
-        //todo is this how you get the teamside??
-
-        //Je crois ouais
-
-        if (teamSide.equals(0)){associatedImage="icwars/allyCursor";}
+        if (teamSide.equals(ICWarsTeamSide.ALLY)){associatedImage="icwars/allyCursor";}
         else {associatedImage="icwars/enemyCursor";}
 
         sprite = new Sprite(associatedImage, 1.f, 1.f,this);

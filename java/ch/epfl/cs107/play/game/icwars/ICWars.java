@@ -78,8 +78,12 @@ public class ICWars extends AreaGame{
 
         Button key = keyboard.get(Keyboard.N) ;
         if (key.isDown()) {nextArea();}
+
         key = keyboard.get(Keyboard.R) ;
-        if (key.isDown()) {}
+        if (key.isDown()) {
+            areaIndex=0;
+            initArea();
+        }
     }
 
     private void nextArea(){
@@ -98,16 +102,19 @@ public class ICWars extends AreaGame{
         Unit tank1 = new Tanks( area , new DiscreteCoordinates(2,5), teamSideRealPlayer);
         Unit soldier1 = new Soldats( area, new DiscreteCoordinates(3,5), teamSideRealPlayer);
 
-        //todo I dont know if I need to use the enterAria is needed...
+        int[][] PlayerCoordinatesForArea={{ 0 , 0 } , { 2 , 5 } };
         realPlayer = new RealPlayer(teamSideRealPlayer , area , new DiscreteCoordinates(0, 0), soldier1, tank1);
-        realPlayer.enterArea(area, new DiscreteCoordinates(0,0));
+        realPlayer.enterArea(area, new DiscreteCoordinates(PlayerCoordinatesForArea[areaIndex][0],PlayerCoordinatesForArea[areaIndex][1]));
     }
 
     /** Méthode end
      *
      */
     @Override
-    public void end() {System.out.println("GAME OVER");}
+    public void end() {
+        System.out.println("GAME OVER");
+        //todo close window??
+    }
 
 
     /**
