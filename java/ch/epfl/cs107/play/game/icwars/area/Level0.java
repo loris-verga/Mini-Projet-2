@@ -1,12 +1,22 @@
 package ch.epfl.cs107.play.game.icwars.area;
 
 
-
+import ch.epfl.cs107.play.game.areagame.actor.Background;
+import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 
 /**
  * C'est une aire spécifique de notre jeu.
  */
 public class Level0 extends ICWarsArea{
+
+
+
+    //TODO redéfinir cette méthode, jpense qu'il manque le fait que y'a des actors à faire spawn
+    protected void createArea() {
+        // Base
+        registerActor(new Background(this));
+        //registerActor(new Foreground(this));
+    }
 
 
 

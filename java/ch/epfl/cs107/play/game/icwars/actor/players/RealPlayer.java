@@ -30,6 +30,8 @@ public class RealPlayer extends ICWarsPlayer {
 
         //todo is this how you get the teamside??
 
+        //Je crois ouais
+
         if (teamSide.equals(0)){associatedImage="icwars/allyCursor";}
         else {associatedImage="icwars/enemyCursor";}
 
