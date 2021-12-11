@@ -5,19 +5,26 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
 import ch.epfl.cs107.play.game.icwars.actor.Unit;
+import ch.epfl.cs107.play.game.icwars.gui.ICWarsPlayerGUI;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * class abstraite ICWarsPlayer represente un joueur generique
  */
 
-abstract class ICWarsPlayer extends ICWarsActor{
+public abstract class ICWarsPlayer extends ICWarsActor{
 
+    //TODO Est-ce que listOfUnits doit être public ou private ?
     public ArrayList<Unit> listOfUnits = new ArrayList<>();
+
+    protected ICWarsPlayerGUI playerGUI;
+
+    private Unit selectedUnit = null;
 
     /**
      *  constructeur de la classe ICWarsPlayer
@@ -36,6 +43,8 @@ abstract class ICWarsPlayer extends ICWarsActor{
               area.registerActor(unit);
 
         }
+
+        playerGUI = new ICWarsPlayerGUI(0.f, this);
     }
 
     /**
@@ -89,5 +98,36 @@ abstract class ICWarsPlayer extends ICWarsActor{
     public boolean isViewInteractable() {
         return true;
     }
+
+/*
+    /**
+     * Méthode selectUnit: permet de sélectionner une unité.
+     */
+    /*
+    protected void selectUnit(){
+        DiscreteCoordinates coordinatesPlayer = getCurrentMainCellCoordinates();
+        for (int index = 0; index<listOfUnits.size(); ++index){
+            Unit unit = listOfUnits.get(index);
+            List<DiscreteCoordinates> listCoordinatesUnit = unit.getCurrentCells();
+            for (int indexList = 0; indexList<listCoordinatesUnit.size(); ++indexList){
+                if (listCoordinatesUnit.get(indexList).equals(coordinatesPlayer)){
+                    selectedUnit = unit;
+                }
+            }
+        }
+
+    }
+    */
+    public void selectUnit(int indice) {
+        if (indice < listOfUnits.size() && indice >= 0) {
+            selectedUnit = listOfUnits.get(indice);
+            playerGUI.setSelectedUnit(selectedUnit);
+
+        }
+    }
+
+
+
+
 
 }

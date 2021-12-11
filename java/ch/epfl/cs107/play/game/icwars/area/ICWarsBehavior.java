@@ -125,6 +125,9 @@ public class ICWarsBehavior extends AreaBehavior {
             => Revoir la fonction takeCellSpace
 
 
+
+
+
             Update(4.12.2021) https://piazza.com/class/ktijhp746sr283?cid=570
 
              */

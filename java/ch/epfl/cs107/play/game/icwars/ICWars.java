@@ -84,6 +84,11 @@ public class ICWars extends AreaGame{
             areaIndex=0;
             initArea();
         }
+
+        if (keyboard.get(Keyboard.U).isReleased()) {
+            ((RealPlayer)realPlayer).selectUnit (0); // 0, 1 ...
+        }
+
     }
 
     /**

@@ -1,15 +1,25 @@
 package ch.epfl.cs107.play.game.icwars.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.actor.Path;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsRange;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.lang.annotation.Documented;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Queue;
 
 public abstract class Unit extends ICWarsActor{
+
+    private ICWarsRange range;
+
+
 
 
     //La valeur d'unitHp doit être positive et a une valeur maximale
@@ -40,9 +50,99 @@ public abstract class Unit extends ICWarsActor{
 
         this.movementRadius = movementRadius;
 
+//Nœuds de positions
+        int heightArea = areaOwner.getHeight();
+        int widthArea = areaOwner.getWidth();
+        this.range = new ICWarsRange();
+        initRange(coordinates.x, coordinates.y, movementRadius, heightArea, widthArea);
+
+
+
 
 
     }
+
+    /**
+     * Cette méthode appelle les méthodes qui servent à initialiser le range.
+     * @param coordX
+     * @param coordY
+     * @param radius
+     * @param height
+     * @param width
+     */
+    public void initRange(int coordX, int coordY, int radius, int height, int width){
+        ArrayList<int[]> nodesCoords = getNodesCoords(coordX, coordY, radius, height, width);
+        addAllNodes(nodesCoords, coordX, coordY, radius);
+    }
+
+
+    /**
+     * Cette méthode retourne une liste de coordonnées de nœuds, c'est-à-dire la liste des coordonnées des points qui se situent
+     * à une certaine distance (radius) du point (fromX,fromY)
+     * @param fromX
+     * @param fromY
+     * @param radius
+     * @param maxX dimensions de la fenêtre
+     * @param maxY
+     * @return une array qui contient des tableaux qui contiennent les coordonnées x et y des tableaux
+     */
+    public ArrayList<int[]> getNodesCoords(int fromX,int  fromY, int radius, int maxX, int maxY){
+        ArrayList<int[]> list = new ArrayList<int[]>();
+        for (int coordX = 0; coordX<maxX; ++ coordX){
+            for (int coordY = 0; coordY<maxY; ++ coordY){
+                if ((coordX<=fromX+radius)&&(coordX>=fromX-radius)&&(coordY<=fromY+radius)&&(coordY>=fromY-radius)){
+                    list.add(new int[]{coordX, coordY});
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Méthode qui ajoute les nœuds
+     * @param nodesCoords
+     * @param fromX
+     * @param fromY
+     * @param radius
+     */
+    public void addAllNodes(ArrayList<int[]> nodesCoords, int fromX, int fromY, int radius){
+        for (int indexArray = 0; indexArray < nodesCoords.size(); ++indexArray){
+            int coordX = nodesCoords.get(indexArray)[0];
+            int coordY = nodesCoords.get(indexArray)[1];
+            boolean hasLeftEdge = false;
+            boolean hasUpEdge = false;
+            boolean hasRightEdge = false;
+            boolean hasDownEdge = false;
+            //à vérifier /TODO
+            //ce que dit l'énoncé: if (coordX >-radius && coordX + fromX>0){hasLeftEdge = true;}
+            //ma reflexion:
+            if (coordX>fromX-radius){hasLeftEdge = true;}
+            if (coordX<fromX+radius){hasRightEdge = true;}
+            if(coordY>fromY-radius){hasDownEdge = true;}
+            if(coordY<fromY+radius){hasUpEdge = true;}
+
+            range.addNode(new DiscreteCoordinates(coordX, coordY), hasLeftEdge, hasUpEdge, hasRightEdge, hasDownEdge);
+
+        }
+    }
+/*
+    public void testGetNodesCoords(){
+        Area currentArea = getOwnerArea();
+        int height = currentArea.getHeight();
+        int width = currentArea.getWidth();
+        ArrayList<int[]> test = getNodesCoords(4, 4, 3, height, width);
+        System.out.print(test);
+
+
+
+    }
+*/
+        //getCurrentCells()
+        //https://piazza.com/class/ktijhp746sr283?cid=642
+
+
+
+
 
     /**
      * Constructeur du sprite
@@ -155,6 +255,28 @@ public abstract class Unit extends ICWarsActor{
     public void draw(Canvas canvas){
         sprite.draw(canvas);
     }
+
+
+
+    /**
+     * Draw the unit's range and a path from the unit position to
+     destination
+     * @param destination path destination
+     * @param canvas canvas
+     */
+    public void drawRangeAndPathTo(DiscreteCoordinates destination ,
+                                   Canvas canvas) {
+        range.draw(canvas);
+        Queue<Orientation> path =
+                range.shortestPath(getCurrentMainCellCoordinates(),destination);
+
+        //Draw path only if it exists (destination inside the range)
+        if (path != null){
+            new Path(getCurrentMainCellCoordinates().toVector(),
+                    path).draw(canvas);
+        }
+    }
+
 
 
 
