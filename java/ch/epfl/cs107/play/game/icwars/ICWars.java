@@ -54,17 +54,20 @@ public class ICWars extends AreaGame{
      * @param fileSystem C'est le système de fichier pour aller chercher des ressources
      * @return : La méthode retourne true si le démarrage du jeu s'est bien déroulé (la méthode begin a pu s'exécuter sans erreurs.
      */
-  @Override
+
+    @Override
     public boolean begin(Window window, FileSystem fileSystem) {
       if (super.begin(window, fileSystem)) {
           createAreas();
           areaIndex = 0;
           initArea();
+          realPlayer.startTurn();
 
           return true;
       }
       return false;
   }
+
 
     /**
      * methode update voit si le joueur veux changer de niveau ou si il veut recommencer le jeu
@@ -85,9 +88,10 @@ public class ICWars extends AreaGame{
             initArea();
         }
 
-        if (keyboard.get(Keyboard.U).isReleased()) {
-            ((RealPlayer)realPlayer).selectUnit (0); // 0, 1 ...
-        }
+        //todo I think I can remove this.?
+        //if (keyboard.get(Keyboard.U).isReleased()) {
+        //    ((RealPlayer)realPlayer).selectUnit (0); // 0, 1 ...
+        //}
 
     }
 

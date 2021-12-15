@@ -17,8 +17,10 @@ public abstract class ICWarsActor extends MovableAreaEntity {
     //Variable qui stocke le camp d'un acteur
     ICWarsTeamSide teamSide;
 
-
-
+    //todo getter not sure, remove this if it doesn t work
+    public ICWarsTeamSide getTeamSide(){
+        return teamSide;
+    }
 
 
 

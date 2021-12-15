@@ -1,11 +1,13 @@
 package ch.epfl.cs107.play.game.icwars.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Path;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsRange;
+import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
@@ -30,6 +32,8 @@ public abstract class Unit extends ICWarsActor{
 
     //Le rayon de déplacement de l'unité (par tour)
     private int movementRadius;
+
+    public boolean markAsUsed;
 
 
     /**
@@ -59,7 +63,6 @@ public abstract class Unit extends ICWarsActor{
 
 
 
-
     }
 
     /**
@@ -72,9 +75,8 @@ public abstract class Unit extends ICWarsActor{
      */
     public void initRange(int coordX, int coordY, int radius, int height, int width){
         ArrayList<int[]> nodesCoords = getNodesCoords(coordX, coordY, radius, height, width);
-        addAllNodes(nodesCoords, coordX, coordY, radius);
+        addAllNodes(nodesCoords, coordX, coordY, radius, height, width);
     }
-
 
     /**
      * Cette méthode retourne une liste de coordonnées de nœuds, c'est-à-dire la liste des coordonnées des points qui se situent
@@ -105,7 +107,7 @@ public abstract class Unit extends ICWarsActor{
      * @param fromY
      * @param radius
      */
-    public void addAllNodes(ArrayList<int[]> nodesCoords, int fromX, int fromY, int radius){
+    public void addAllNodes(ArrayList<int[]> nodesCoords, int fromX, int fromY, int radius, int maxX, int maxY){
         for (int indexArray = 0; indexArray < nodesCoords.size(); ++indexArray){
             int coordX = nodesCoords.get(indexArray)[0];
             int coordY = nodesCoords.get(indexArray)[1];
@@ -116,10 +118,10 @@ public abstract class Unit extends ICWarsActor{
             //à vérifier /TODO
             //ce que dit l'énoncé: if (coordX >-radius && coordX + fromX>0){hasLeftEdge = true;}
             //ma reflexion:
-            if (coordX>fromX-radius){hasLeftEdge = true;}
-            if (coordX<fromX+radius){hasRightEdge = true;}
-            if(coordY>fromY-radius){hasDownEdge = true;}
-            if(coordY<fromY+radius){hasUpEdge = true;}
+            if ((coordX>fromX-radius)&&(coordX>0)){hasLeftEdge = true;}
+            if ((coordX<fromX+radius)&&(coordX<maxX)){hasRightEdge = true;}
+            if((coordY>fromY-radius)&&(coordY>0)){hasDownEdge = true;}
+            if((coordY<fromY+radius)&&(coordY<maxY)){hasUpEdge = true;}
 
             range.addNode(new DiscreteCoordinates(coordX, coordY), hasLeftEdge, hasUpEdge, hasRightEdge, hasDownEdge);
 
@@ -200,11 +202,6 @@ public abstract class Unit extends ICWarsActor{
     }
 
 
-
-
-
-
-
     /**
      * Fonction isDead
      * @return retourne true si l'unité est morte.
@@ -243,9 +240,8 @@ public abstract class Unit extends ICWarsActor{
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v){
-        //TODO
+        ((ICWarsInteractionVisitor)v).interactWith(this);
     }
-
 
     /**
      * méthode draw: permet de dessiner le sprite associé à l'unité
@@ -256,7 +252,10 @@ public abstract class Unit extends ICWarsActor{
         sprite.draw(canvas);
     }
 
-
+    @Override
+    public boolean changePosition(DiscreteCoordinates newPosition) {
+       return (range.nodeExists(newPosition) && super.changePosition(newPosition) );
+    }
 
     /**
      * Draw the unit's range and a path from the unit position to

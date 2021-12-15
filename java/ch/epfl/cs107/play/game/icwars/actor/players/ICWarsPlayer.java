@@ -1,14 +1,14 @@
 package ch.epfl.cs107.play.game.icwars.actor.players;
 
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
 import ch.epfl.cs107.play.game.icwars.actor.Unit;
 import ch.epfl.cs107.play.game.icwars.gui.ICWarsPlayerGUI;
+import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.window.Canvas;
-import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +17,17 @@ import java.util.List;
  * class abstraite ICWarsPlayer represente un joueur generique
  */
 
-public abstract class ICWarsPlayer extends ICWarsActor{
+public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
     //TODO Est-ce que listOfUnits doit être public ou private ?
     public ArrayList<Unit> listOfUnits = new ArrayList<>();
 
     protected ICWarsPlayerGUI playerGUI;
 
-    private Unit selectedUnit = null;
+    //todo changed private into protected
+    protected Unit selectedUnit;
+
+    protected PlayerState currentState;
 
     /**
      *  constructeur de la classe ICWarsPlayer
@@ -41,13 +44,64 @@ public abstract class ICWarsPlayer extends ICWarsActor{
         for (Unit unit: units){
               listOfUnits.add(unit);
               area.registerActor(unit);
-
         }
 
         playerGUI = new ICWarsPlayerGUI(0.f, this);
+
+        //todo check if this is correct
+        selectedUnit = null;
+
+        currentState = PlayerState.IDLE;
+        //todo remove this if this works
+    }
+
+    @Override
+    public List<DiscreteCoordinates> getFieldOfViewCells() {
+        return null;
+    }
+
+    @Override
+    public boolean wantsCellInteraction() {
+        return true;
+    }
+
+    @Override
+    public boolean wantsViewInteraction() {
+        return false;
+    }
+
+    @Override
+    public void interactWith(Interactable other) {}
+
+
+    public enum PlayerState{
+        //todo copied from AriaBehavior and changed it a bit, need to verify
+        IDLE,
+        NORMAL,
+        SELECT_CELL,
+        MOVE_UNIT,
+        ACTION_SELECT,
+        ACTION,;
+
+    }
+
+    public void startTurn(){
+        currentState = PlayerState.NORMAL;
+        centerCamera();
+        //todo initialiser les unites
+        for (int i = 0; i < listOfUnits.size() ; i++){listOfUnits.get(i).markAsUsed = false;}
     }
 
     /**
+     * Called when this Interactable leaves a cell
+     * @param coordinates left cell coordinates
+     */
+    @Override
+    public void onLeaving(List<DiscreteCoordinates> coordinates){
+        if (currentState == PlayerState.SELECT_CELL){currentState = PlayerState.NORMAL;}
+    }
+
+        /**
      * methode update : enleve de l'aire et du tableau d'unites les unites qui sont mortes
      * @param deltaTime
      */
@@ -99,25 +153,16 @@ public abstract class ICWarsPlayer extends ICWarsActor{
         return true;
     }
 
-/*
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v){
+        ((ICWarsInteractionVisitor)v).interactWith(this);
+    }
+
     /**
      * Méthode selectUnit: permet de sélectionner une unité.
      */
-    /*
-    protected void selectUnit(){
-        DiscreteCoordinates coordinatesPlayer = getCurrentMainCellCoordinates();
-        for (int index = 0; index<listOfUnits.size(); ++index){
-            Unit unit = listOfUnits.get(index);
-            List<DiscreteCoordinates> listCoordinatesUnit = unit.getCurrentCells();
-            for (int indexList = 0; indexList<listCoordinatesUnit.size(); ++indexList){
-                if (listCoordinatesUnit.get(indexList).equals(coordinatesPlayer)){
-                    selectedUnit = unit;
-                }
-            }
-        }
 
-    }
-    */
+
     public void selectUnit(int indice) {
         if (indice < listOfUnits.size() && indice >= 0) {
             selectedUnit = listOfUnits.get(indice);
