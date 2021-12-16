@@ -262,7 +262,11 @@ public abstract class Unit extends ICWarsActor{
 
     @Override
     public boolean changePosition(DiscreteCoordinates newPosition) {
-       return (range.nodeExists(newPosition) && super.changePosition(newPosition) );
+        if (range.nodeExists(newPosition) && super.changePosition(newPosition)){
+            //todo update range here
+            return true;}
+
+        else{return false;}
     }
 
     /**

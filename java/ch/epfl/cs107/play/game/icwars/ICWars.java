@@ -108,7 +108,7 @@ public class ICWars extends AreaGame{
         Keyboard keyboard = getWindow().getKeyboard() ;
 
         Button key = keyboard.get(Keyboard.N) ;
-        if (key.isPressed()) {nextArea();}
+        if (key.isPressed()) {switchGameState(GameState.END);}
 
         key = keyboard.get(Keyboard.R) ;
         if (key.isPressed()) {
@@ -184,7 +184,7 @@ public class ICWars extends AreaGame{
     private void nextArea(){
         areaIndex+=1;
         for  (ICWarsPlayer player : listOfPlayers){player.leaveArea();}
-
+        listOfPlayers.clear();
         if (areaIndex <= areas.length - 1 ){initArea();}
         else{end();}
     }
