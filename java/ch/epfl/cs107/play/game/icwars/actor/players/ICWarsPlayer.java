@@ -101,7 +101,12 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         if (currentState == PlayerState.SELECT_CELL){currentState = PlayerState.NORMAL;}
     }
 
-        /**
+    @Override
+    public boolean changePosition(DiscreteCoordinates newPosition) {
+        return super.changePosition(newPosition);
+    }
+
+    /**
      * methode update : enleve de l'aire et du tableau d'unites les unites qui sont mortes
      * @param deltaTime
      */
