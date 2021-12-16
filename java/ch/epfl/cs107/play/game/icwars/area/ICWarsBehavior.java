@@ -178,9 +178,7 @@ public class ICWarsBehavior extends AreaBehavior {
          * @param v (AreaInteractionVisitor) : the visitor Le paramètre est le visiteur qui veut interagir (donc l'interacteur)
          */
         @Override
-        public void acceptInteraction(AreaInteractionVisitor v) {
-            //Méthode à définir
-        }
+        public void acceptInteraction(AreaInteractionVisitor v) {}
 
 
 

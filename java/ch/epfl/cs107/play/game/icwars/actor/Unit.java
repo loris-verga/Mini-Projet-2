@@ -21,9 +21,6 @@ public abstract class Unit extends ICWarsActor{
 
     private ICWarsRange range;
 
-
-
-
     //La valeur d'unitHp doit être positive et a une valeur maximale
     private float unitHp;
     private float unitHpMax;
@@ -54,15 +51,11 @@ public abstract class Unit extends ICWarsActor{
 
         this.movementRadius = movementRadius;
 
-//Nœuds de positions
+        //Nœuds de positions
         int heightArea = areaOwner.getHeight();
         int widthArea = areaOwner.getWidth();
         this.range = new ICWarsRange();
         this.range = initRange(coordinates.x, coordinates.y, movementRadius, widthArea, heightArea);
-
-
-
-
     }
 
     /**
@@ -130,13 +123,17 @@ public abstract class Unit extends ICWarsActor{
         return range;
     }
 
-
-
+    /**
+     * methode becomeNotUsable permet l'unit a ne plus etre utilisable lors du tour
+     */
     public void becomeNotUsable(){
         this.markAsUsed=true;
         this.sprite.setAlpha(0.5f);
     }
 
+    /**
+     * methode becomeUsable permet l'unit a devenir utilisable lors du tour
+     */
     public void becomeUsable(){
         this.markAsUsed=false;
         this.sprite.setAlpha(1.f);
@@ -151,8 +148,6 @@ public abstract class Unit extends ICWarsActor{
         this.sprite = new Sprite(nameSprite, 1.5f, 1.5f, this, null, new Vector(-0.25f, -0.25f));
     }
 
-
-
     /**
      * Fonction repareHp: permet d'augmenter les points de vie d'une unité (on ne peut pas augmenter à plus d'unitHpMax)
      * @param hpToAdd : nombre de hp que l'on veut ajouter.
@@ -163,6 +158,7 @@ public abstract class Unit extends ICWarsActor{
             unitHp = unitHpMax;
         }
     }
+
     /**
      * Fonction sufferDamage : permet de faire subir des dommages à l'unité
      * @param hpToRemove : nombre de hp que l'on veut retirer. (on ne peut pas avoir de hp négatif)
@@ -234,7 +230,10 @@ public abstract class Unit extends ICWarsActor{
     public boolean isViewInteractable(){ return false;}
 
 
-
+    /**
+     * Une unité accepte les interactions avec un interactor
+     * @return false
+     */
     @Override
     public void acceptInteraction(AreaInteractionVisitor v){
         ((ICWarsInteractionVisitor)v).interactWith(this);
@@ -249,6 +248,11 @@ public abstract class Unit extends ICWarsActor{
         sprite.draw(canvas);
     }
 
+    /**
+     * methode changePosition change les position de l'unit si ces positions sont dans son range
+     * @param newPosition nouvelle position de l'unite
+     * @return
+     */
     @Override
     public boolean changePosition(DiscreteCoordinates newPosition) {
         boolean condition = range.nodeExists(newPosition) && super.changePosition(newPosition);

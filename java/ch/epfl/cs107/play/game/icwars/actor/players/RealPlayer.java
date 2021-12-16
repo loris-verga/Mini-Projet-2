@@ -66,11 +66,21 @@ public class RealPlayer extends ICWarsPlayer {
         updateState();
     }
 
-    //todo needed to do this to keep currentState private
+    /**
+     * methode getcurrentState permet de voir l'etat courant du joueur
+     * @return currentState l'etat current du joueur
+     */
     public PlayerState getcurrentState(){return currentState;}
 
+
+    /**
+     * methode changecurrentState permet de changer l'etat courant du joueur
+     */
     public void changecurrentState(PlayerState NewState){currentState = NewState;}
 
+    /**
+     * methode canMove donne la possibilite au joueur de bouger
+     */
     private void canMove(){
         Keyboard keyboard = getOwnerArea().getKeyboard();
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
@@ -93,6 +103,9 @@ public class RealPlayer extends ICWarsPlayer {
         }
     }
 
+    /**
+     * methode updateState permet de mettre a jour l'etat du joueur dependant des actions du joueur
+     */
     private void updateState(){
         Keyboard keyboard = getOwnerArea().getKeyboard() ;
         Button key;
@@ -197,12 +210,14 @@ public class RealPlayer extends ICWarsPlayer {
 
     @Override
     public void interactWith(Interactable v){
-
         if (isDisplacementOccurs()==false) {
             v.acceptInteraction(handler);
         }
     }
 
+    /**
+     * class imbriquer ICWarsPlayerInteractionHandler prendre en charge les interactions entre les joueurs et les unites
+     */
     private class ICWarsPlayerInteractionHandler implements ICWarsInteractionVisitor {
 
 

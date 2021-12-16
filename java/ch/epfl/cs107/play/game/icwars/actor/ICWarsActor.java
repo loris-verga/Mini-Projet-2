@@ -17,7 +17,10 @@ public abstract class ICWarsActor extends MovableAreaEntity {
     //Variable qui stocke le camp d'un acteur
     ICWarsTeamSide teamSide;
 
-    //todo getter not sure, remove this if it doesn t work
+    /**
+     * methode getTeamSide est un getteur qui permet de trouver la faction de l'acteur
+     * @return teamSide la faction de l'acteur
+     */
     public ICWarsTeamSide getTeamSide(){
         return teamSide;
     }
@@ -55,14 +58,6 @@ public abstract class ICWarsActor extends MovableAreaEntity {
 
     }
 
-
-
-
-
-
-
-
-
     /**
      *Méthode enterArea: permet à un acteur d'entrer dans une aire.
      * @param area (Area): initial area, not null
@@ -97,14 +92,6 @@ public abstract class ICWarsActor extends MovableAreaEntity {
      * @return retourne le nom de l'acteur
      */
     public abstract String getName();
-
-
-
-
-
-
-
-
 
 
 }

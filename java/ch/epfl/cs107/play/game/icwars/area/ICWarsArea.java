@@ -8,10 +8,7 @@ import ch.epfl.cs107.play.window.Window;
 
 public abstract class ICWarsArea extends Area {
 
-
-    //On associe un comportement à notre aire
     private ICWarsBehavior behavior;
-
 
     /**
      * Create the area by adding it all actors
@@ -19,9 +16,6 @@ public abstract class ICWarsArea extends Area {
      * Note it set the Behavior as needed !
      */
     protected abstract void createArea();
-
-
-
 
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
@@ -35,13 +29,6 @@ public abstract class ICWarsArea extends Area {
         return false;
     }
 
-
-
-
-
-
-
-
     /**
      * Méthode getCameraScaleFactor: Toutes les areas de notre jeu ont un CameraScaleFactor qui définit la taille
      * du champ de vision.
@@ -51,8 +38,5 @@ public abstract class ICWarsArea extends Area {
     public final float getCameraScaleFactor() {
         return ICWars.CAMERA_SCALE_FACTOR;
     }
-
-
-
 
 }

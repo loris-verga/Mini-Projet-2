@@ -56,6 +56,9 @@ public class ICWars extends AreaGame{
         addArea(new Level1());
     }
 
+    /**
+     * enumerer GameState permet de definir dans quelle etat du jeu on se trouve
+     */
     private enum GameState{
         INIT,
         CHOOSE_PLAYER,
@@ -67,7 +70,7 @@ public class ICWars extends AreaGame{
     }
 
     /**
-     *
+     * methode begin initialise le jeu au commencement du programme
      * @param window : C'est la fenêtre sur laquelle le jeu va se dérouler (accès à un contexte graphique)
      * @param fileSystem C'est le système de fichier pour aller chercher des ressources
      * @return : La méthode retourne true si le démarrage du jeu s'est bien déroulé (la méthode begin a pu s'exécuter sans erreurs.
@@ -84,9 +87,8 @@ public class ICWars extends AreaGame{
       return false;
   }
 
-
     /**
-     * methode update voit si le joueur veux changer de niveau ou si il veut recommencer le jeu
+     * methode update voit si le joueur veux changer de niveau ou s'il veut recommencer le jeu, et mets a jour l'etat current du jeu
      * @param deltaTime
      */
     @Override
@@ -108,6 +110,9 @@ public class ICWars extends AreaGame{
 
     }
 
+    /**
+     * methode updateGameState gere les tours du jeu en utilisant plusieurs arraylist pour stocker et memoriser les joueurs qui doivent jouer, et enlecer ceux qui ont eu defaite
+     */
     private void updateGameState(){
         switch (gameState) {
             case INIT :{
@@ -159,22 +164,21 @@ public class ICWars extends AreaGame{
             case END:{
                 listOfFuturWaitingPlayer.clear();
                 listOfCurrentWaitingPlayer.clear();
-                //todo not sure if this is needed
-                //for (ICWarsPlayer player : listOfPlayers){
-                //    for (Unit unit : player.listOfUnits){unit.leaveArea();}
-                //}
                 nextArea();
                 break;
             }
         }
     }
 
+    /**
+     * methode switchGameState permet de changer a un autre etat de jeu
+     * @param newGameState le nouveaux etat de jeu
+     */
     private void switchGameState(GameState newGameState){gameState=newGameState;}
 
     /**
      * methode nextArea permet de passer a la prochaine aire dans le tableau areas
      */
-
     private void nextArea(){
         areaIndex+=1;
         for  (ICWarsPlayer player : listOfPlayers){player.leaveArea();}
@@ -184,11 +188,9 @@ public class ICWars extends AreaGame{
     }
 
     /**
-     * methode initArea permet d'initialiser l'aire qu'on se trouve avec les joueurs et ces units
+     * methode initArea permet d'initialiser l'aire qu'on se trouve avec les joueurs et leurs units
      */
-
     private void initArea(){
-        //todo make this shorter if it works
         Area area = setCurrentArea(areas[areaIndex], true);
 
         ICWarsActor.ICWarsTeamSide teamSidePlayer1= ICWarsActor.ICWarsTeamSide.ALLY;
@@ -200,13 +202,14 @@ public class ICWars extends AreaGame{
         Unit tank2 = new Tanks( area , new DiscreteCoordinates(8,5), teamSidePlayer2);
         Unit soldier2 = new Soldats( area, new DiscreteCoordinates(9,5), teamSidePlayer2);
 
+        int[][] Player2CoordinatesForArea={{ 7 , 4 } , { 17 , 5 }};
+        Player2 = new RealPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2, tank2);
+        Player2.enterArea(area, new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]));
+
         int[][] Player1CoordinatesForArea={{ 0 , 0 } , { 2 , 5 } };
         Player1 = new RealPlayer(teamSidePlayer1 , area , new DiscreteCoordinates(Player1CoordinatesForArea[areaIndex][0],Player1CoordinatesForArea[areaIndex][1]), soldier1, tank1);
         Player1.enterArea(area, new DiscreteCoordinates(Player1CoordinatesForArea[areaIndex][0],Player1CoordinatesForArea[areaIndex][1]));
 
-        int[][] Player2CoordinatesForArea={{ 7 , 4 } , { 17 , 5 }};
-        Player2 = new RealPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2, tank2);
-        Player2.enterArea(area, new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]));
 
         listOfPlayers.add(Player1);
         listOfPlayers.add(Player2);
@@ -219,13 +222,13 @@ public class ICWars extends AreaGame{
     @Override
     public void end() {
         System.out.println("GAME OVER");
-        //todo close window??
+        //todo close window?
     }
 
 
     /**
-     * methode publique getTitle permet de trouver le titre de la classe
-     * @return
+     * methode getTitle permet de trouver le titre de la classe
+     * @return le titre du jeu
      */
     @Override
     public String getTitle() {

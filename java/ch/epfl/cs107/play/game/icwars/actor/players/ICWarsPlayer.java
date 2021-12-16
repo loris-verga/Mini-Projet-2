@@ -19,12 +19,10 @@ import java.util.List;
 
 public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
-    //TODO Est-ce que listOfUnits doit être public ou private ?
     public ArrayList<Unit> listOfUnits = new ArrayList<>();
 
     protected ICWarsPlayerGUI playerGUI;
 
-    //todo changed private into protected
     protected Unit selectedUnit;
 
     public PlayerState currentState;
@@ -48,11 +46,9 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
         playerGUI = new ICWarsPlayerGUI(0.f, this);
 
-        //todo check if this is correct
         selectedUnit = null;
 
         currentState = PlayerState.IDLE;
-        //todo remove this if this works
     }
 
     @Override
@@ -73,9 +69,10 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     @Override
     public void interactWith(Interactable other) {}
 
-
+    /**
+     * enumerer PlayerState corresponds aux differents etats que le joueur peut prendre
+     */
     public enum PlayerState{
-
         IDLE,
         NORMAL,
         SELECT_CELL,
@@ -85,6 +82,9 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
     }
 
+    /**
+     * methode startTurn permet de commencer le tour du joueur, lui donner ces unites et centrer la camera sur lui
+     */
     public void startTurn(){
         currentState = PlayerState.NORMAL;
         centerCamera();
@@ -137,7 +137,6 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         else {return false;}
     }
 
-
     /**
      * methode centerCamera permet de centrer la camera sur le joueur
      */
@@ -166,8 +165,6 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     /**
      * Méthode selectUnit: permet de sélectionner une unité.
      */
-
-
     public void selectUnit(int indice) {
         if (indice < listOfUnits.size() && indice >= 0) {
             selectedUnit = listOfUnits.get(indice);
@@ -175,9 +172,4 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
         }
     }
-
-
-
-
-
 }

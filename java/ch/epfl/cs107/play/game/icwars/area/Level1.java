@@ -9,7 +9,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Foreground;
  */
 public class Level1 extends ICWarsArea{
 
-    //TODO redéfinir cette méthode, jpense qu'il manque le fait que y'a des actors à faire spawn
     protected void createArea() {
         // Base
         registerActor(new Background(this));
