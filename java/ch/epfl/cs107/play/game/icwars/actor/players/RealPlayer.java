@@ -162,7 +162,9 @@ public class RealPlayer extends ICWarsPlayer {
 
     @Override
     public void draw(Canvas canvas) {
-        sprite.draw(canvas);
+        if (getcurrentState()!=PlayerState.IDLE){
+            sprite.draw(canvas);
+        }
         if (getcurrentState()==PlayerState.MOVE_UNIT) {
             playerGUI.draw(canvas);
         }
