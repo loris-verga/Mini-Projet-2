@@ -58,7 +58,7 @@ public abstract class Unit extends ICWarsActor{
         int heightArea = areaOwner.getHeight();
         int widthArea = areaOwner.getWidth();
         this.range = new ICWarsRange();
-        this.range = initRange(coordinates.x, coordinates.y, movementRadius, heightArea, widthArea);
+        this.range = initRange(coordinates.x, coordinates.y, movementRadius, widthArea, heightArea);
 
 
 
@@ -91,6 +91,7 @@ public abstract class Unit extends ICWarsActor{
      * @return une array qui contient des tableaux qui contiennent les coordonnées x et y des tableaux
      */
     public ArrayList<int[]> getNodesCoords(int fromX,int  fromY, int radius, int maxX, int maxY){
+        Area test =getOwnerArea();
         ArrayList<int[]> list = new ArrayList<int[]>();
         for (int coordX = 0; coordX<maxX; ++ coordX){
             for (int coordY = 0; coordY<maxY; ++ coordY){
@@ -117,9 +118,7 @@ public abstract class Unit extends ICWarsActor{
             boolean hasUpEdge = false;
             boolean hasRightEdge = false;
             boolean hasDownEdge = false;
-            //à vérifier /TODO
-            //ce que dit l'énoncé: if (coordX >-radius && coordX + fromX>0){hasLeftEdge = true;}
-            //ma reflexion:
+
             if ((coordX>fromX-radius)&&(coordX>0)){hasLeftEdge = true;}
             if ((coordX<fromX+radius)&&(coordX<maxX-1)){hasRightEdge = true;}
             if((coordY>fromY-radius)&&(coordY>0)){hasDownEdge = true;}
@@ -130,20 +129,7 @@ public abstract class Unit extends ICWarsActor{
         }
         return range;
     }
-/*
-    public void testGetNodesCoords(){
-        Area currentArea = getOwnerArea();
-        int height = currentArea.getHeight();
-        int width = currentArea.getWidth();
-        ArrayList<int[]> test = getNodesCoords(4, 4, 3, height, width);
-        System.out.print(test);
 
-
-
-    }
-*/
-        //getCurrentCells()
-        //https://piazza.com/class/ktijhp746sr283?cid=642
 
 
     public void becomeNotUsable(){
@@ -265,8 +251,11 @@ public abstract class Unit extends ICWarsActor{
 
     @Override
     public boolean changePosition(DiscreteCoordinates newPosition) {
-        range = initRange(newPosition.x, newPosition.y, movementRadius, getOwnerArea().getHeight(), getOwnerArea().getWidth());
-       return (range.nodeExists(newPosition) && super.changePosition(newPosition) );
+        boolean condition = range.nodeExists(newPosition) && super.changePosition(newPosition);
+        if (condition) {
+            range = initRange(newPosition.x, newPosition.y, movementRadius, getOwnerArea().getWidth(), getOwnerArea().getHeight() );
+        }
+       return (condition);
     }
 
     /**
