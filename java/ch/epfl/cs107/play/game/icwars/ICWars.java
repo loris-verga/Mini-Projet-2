@@ -39,8 +39,6 @@ public class ICWars extends AreaGame{
 
     private final String[] areas = {"icwars/Level0", "icwars/Level1"};
     private static int areaIndex;
-    //Todo remove this is uneciry
-    //private static int currentPlayerIndex;
     private static ICWarsPlayer currentPlayer;
     private static ArrayList<ICWarsPlayer> listOfCurrentWaitingPlayer = new ArrayList<>();
     private static ArrayList<ICWarsPlayer> listOfFuturWaitingPlayer = new ArrayList<>();
@@ -96,15 +94,6 @@ public class ICWars extends AreaGame{
         super.update(deltaTime);
         updateGameState();
 
-        /*for  (ICWarsPlayer player : listOfPlayers){
-            if (player.isPlayerDefeated()){
-                //todo have to check this once attack method is finished...
-                listOfPlayers.remove(player);
-                listOfCurrentWaitingPlayer.remove(player);
-                listOfFuturWaitingPlayer.remove(player);
-            }
-        }*/
-
         Keyboard keyboard = getWindow().getKeyboard() ;
 
         Button key = keyboard.get(Keyboard.N) ;
@@ -112,8 +101,9 @@ public class ICWars extends AreaGame{
 
         key = keyboard.get(Keyboard.R) ;
         if (key.isPressed()) {
-            areaIndex=0;
-            initArea();
+            //todo not sure
+            areaIndex-=1;
+            switchGameState(GameState.END);
         }
 
     }
@@ -169,6 +159,10 @@ public class ICWars extends AreaGame{
             case END:{
                 listOfFuturWaitingPlayer.clear();
                 listOfCurrentWaitingPlayer.clear();
+                //todo not sure if this is needed
+                //for (ICWarsPlayer player : listOfPlayers){
+                //    for (Unit unit : player.listOfUnits){unit.leaveArea();}
+                //}
                 nextArea();
                 break;
             }

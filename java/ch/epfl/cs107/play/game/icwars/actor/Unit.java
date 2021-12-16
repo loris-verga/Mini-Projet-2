@@ -263,12 +263,13 @@ public abstract class Unit extends ICWarsActor{
         sprite.draw(canvas);
     }
 
-    @Override
-    public boolean changePosition(DiscreteCoordinates newPosition) {
-        range = initRange(newPosition.x, newPosition.y, movementRadius, getOwnerArea().getHeight(), getOwnerArea().getWidth());
-       return (range.nodeExists(newPosition) && super.changePosition(newPosition) );
+    @Override public boolean changePosition(DiscreteCoordinates newPosition) {
+        boolean condition = range.nodeExists(newPosition) && super.changePosition(newPosition);
+        if (condition) {
+            range = initRange(newPosition.x, newPosition.y, movementRadius, getOwnerArea().getHeight(), getOwnerArea().getWidth());
+        }
+        return (condition);
     }
-
     /**
      * Draw the unit's range and a path from the unit position to
      destination
