@@ -58,7 +58,7 @@ public abstract class Unit extends ICWarsActor{
         int heightArea = areaOwner.getHeight();
         int widthArea = areaOwner.getWidth();
         this.range = new ICWarsRange();
-        initRange(coordinates.x, coordinates.y, movementRadius, heightArea, widthArea);
+        this.range = initRange(coordinates.x, coordinates.y, movementRadius, heightArea, widthArea);
 
 
 
@@ -73,9 +73,11 @@ public abstract class Unit extends ICWarsActor{
      * @param height
      * @param width
      */
-    public void initRange(int coordX, int coordY, int radius, int height, int width){
+    public ICWarsRange initRange(int coordX, int coordY, int radius, int height, int width){
         ArrayList<int[]> nodesCoords = getNodesCoords(coordX, coordY, radius, height, width);
-        addAllNodes(nodesCoords, coordX, coordY, radius, height, width);
+        ICWarsRange range = new ICWarsRange();
+        range = addAllNodes(range, nodesCoords, coordX, coordY, radius, height, width);
+        return range;
     }
 
     /**
@@ -107,7 +109,7 @@ public abstract class Unit extends ICWarsActor{
      * @param fromY
      * @param radius
      */
-    public void addAllNodes(ArrayList<int[]> nodesCoords, int fromX, int fromY, int radius, int maxX, int maxY){
+    public ICWarsRange addAllNodes(ICWarsRange range, ArrayList<int[]> nodesCoords, int fromX, int fromY, int radius, int maxX, int maxY){
         for (int indexArray = 0; indexArray < nodesCoords.size(); ++indexArray){
             int coordX = nodesCoords.get(indexArray)[0];
             int coordY = nodesCoords.get(indexArray)[1];
@@ -119,13 +121,14 @@ public abstract class Unit extends ICWarsActor{
             //ce que dit l'énoncé: if (coordX >-radius && coordX + fromX>0){hasLeftEdge = true;}
             //ma reflexion:
             if ((coordX>fromX-radius)&&(coordX>0)){hasLeftEdge = true;}
-            if ((coordX<fromX+radius)&&(coordX<maxX)){hasRightEdge = true;}
+            if ((coordX<fromX+radius)&&(coordX<maxX-1)){hasRightEdge = true;}
             if((coordY>fromY-radius)&&(coordY>0)){hasDownEdge = true;}
-            if((coordY<fromY+radius)&&(coordY<maxY)){hasUpEdge = true;}
+            if((coordY<fromY+radius)&&(coordY<maxY-1)){hasUpEdge = true;}
 
             range.addNode(new DiscreteCoordinates(coordX, coordY), hasLeftEdge, hasUpEdge, hasRightEdge, hasDownEdge);
 
         }
+        return range;
     }
 /*
     public void testGetNodesCoords(){
@@ -262,11 +265,8 @@ public abstract class Unit extends ICWarsActor{
 
     @Override
     public boolean changePosition(DiscreteCoordinates newPosition) {
-        if (range.nodeExists(newPosition) && super.changePosition(newPosition)){
-            //todo update range here
-            return true;}
-
-        else{return false;}
+        range = initRange(newPosition.x, newPosition.y, movementRadius, getOwnerArea().getHeight(), getOwnerArea().getWidth());
+       return (range.nodeExists(newPosition) && super.changePosition(newPosition) );
     }
 
     /**
