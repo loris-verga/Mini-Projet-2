@@ -143,7 +143,15 @@ public abstract class Unit extends ICWarsActor{
         //https://piazza.com/class/ktijhp746sr283?cid=642
 
 
+    public void becomeNotUsable(){
+        this.markAsUsed=true;
+        this.sprite.setAlpha(0.5f);
+    }
 
+    public void becomeUsable(){
+        this.markAsUsed=false;
+        this.sprite.setAlpha(1.f);
+    }
 
 
     /**

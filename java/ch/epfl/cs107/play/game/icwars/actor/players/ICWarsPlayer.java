@@ -27,7 +27,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     //todo changed private into protected
     protected Unit selectedUnit;
 
-    protected PlayerState currentState;
+    public PlayerState currentState;
 
     /**
      *  constructeur de la classe ICWarsPlayer
@@ -75,7 +75,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
 
     public enum PlayerState{
-        //todo copied from AriaBehavior and changed it a bit, need to verify
+
         IDLE,
         NORMAL,
         SELECT_CELL,
@@ -88,8 +88,8 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     public void startTurn(){
         currentState = PlayerState.NORMAL;
         centerCamera();
-        //todo initialiser les unites
-        for (int i = 0; i < listOfUnits.size() ; i++){listOfUnits.get(i).markAsUsed = false;}
+
+        for (Unit unit: listOfUnits){unit.becomeUsable();}
     }
 
     /**
@@ -109,11 +109,11 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     public void update(float deltaTime) {
         ArrayList<Integer> listOfIndexToRemove= new ArrayList<>();
 
-        for (int index=0; index < listOfUnits.size(); index++){
-            Unit unit=listOfUnits.get(index);
+        //todo not sure
+        for (Unit unit : listOfUnits){
             if (unit.isDead()){
                 getOwnerArea().unregisterActor(unit);
-                listOfIndexToRemove.add(index);
+                listOfIndexToRemove.add(listOfUnits.indexOf(unit));
             }
         }
         for (int j=0; j < listOfIndexToRemove.size(); j++){
@@ -127,7 +127,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
      * methode isPlayerDefeated regarde si le joueur n'a plus d'unite
      * @return boolean
      */
-    boolean isPlayerDefeated(){
+    public boolean isPlayerDefeated(){
         if (listOfUnits.isEmpty()){return true;}
         else {return false;}
     }

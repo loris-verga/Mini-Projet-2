@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icwars.ICWars;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
 import ch.epfl.cs107.play.game.icwars.actor.Unit;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
@@ -96,7 +97,6 @@ public class RealPlayer extends ICWarsPlayer {
         Keyboard keyboard = getOwnerArea().getKeyboard() ;
         Button key;
 
-        //todo fix problems with switchs and check breaks are correct
        switch (currentState){
 
            case IDLE: {break;}
@@ -116,10 +116,8 @@ public class RealPlayer extends ICWarsPlayer {
 
            case SELECT_CELL: {
                canMove();
-               //todo if selected unit is register in memory and unite has not been used : markAsUsed is false
 
                if (selectedUnit!=null) {changecurrentState(PlayerState.MOVE_UNIT);}
-               //todo not sure...
                else{onLeaving(getCurrentCells());}
                break;
            }
@@ -128,7 +126,7 @@ public class RealPlayer extends ICWarsPlayer {
                key = keyboard.get(Keyboard.ENTER);
 
                if (key.isPressed() && changePosition(getCurrentMainCellCoordinates()) && selectedUnit.changePosition(getCurrentMainCellCoordinates())){
-                   selectedUnit.markAsUsed = true;
+                   selectedUnit.becomeNotUsable();
                    selectedUnit = null;
                    changecurrentState(PlayerState.NORMAL);
                }
@@ -192,7 +190,6 @@ public class RealPlayer extends ICWarsPlayer {
     @Override
     public java.lang.String getName() {return "RealPlayer";}
 
-    //todo not sure
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {}
 
