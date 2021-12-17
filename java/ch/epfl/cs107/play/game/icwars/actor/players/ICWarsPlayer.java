@@ -78,7 +78,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         SELECT_CELL,
         MOVE_UNIT,
         ACTION_SELECT,
-        ACTION,;
+        ACTION;
 
     }
 

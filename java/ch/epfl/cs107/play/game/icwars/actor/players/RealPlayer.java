@@ -6,12 +6,14 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
+import ch.epfl.cs107.play.game.icwars.actor.unit.action.ICWarsAction;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class RealPlayer extends ICWarsPlayer {
     private Sprite sprite;
     private String associatedImage;
     private final static int MOVE_DURATION = 8;
+    private Button act;
 
     ICWarsPlayerInteractionHandler handler;
     /**
@@ -143,9 +146,34 @@ public class RealPlayer extends ICWarsPlayer {
                }
                break;
            }
-           case ACTION_SELECT:{break;}
-               //todo later
-           case ACTION:{break;}
+
+           case ACTION_SELECT:{
+               ArrayList<ICWarsAction> listOfActions = selectedUnit.getListOfActions();
+               ArrayList<Integer> listOfKey = new ArrayList<>();
+               for (ICWarsAction action : listOfActions){
+                   listOfKey.add(action.getKey());
+               }
+               for (Integer selectedKey : listOfKey){
+                   Button theKey = keyboard.get(selectedKey);
+                   if (theKey.isPressed()){
+                       act = theKey;
+                       changecurrentState(PlayerState.ACTION);
+                   }
+               }
+               break;
+           }
+
+           case ACTION:{
+               key = keyboard.get(Keyboard.A);
+               if (act==key){
+                   selectedUnit.getListOfActions().get(0).doAction(0, this, keyboard);
+               }
+               key = keyboard.get(Keyboard.W);
+               if (act==key) {
+                   selectedUnit.getListOfActions().get(1).doAction(0, this, keyboard);
+               }
+               break;
+           }
                //todo later
        }
     }

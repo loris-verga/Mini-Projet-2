@@ -80,42 +80,54 @@ public class Attack extends ICWarsAction{
         ArrayList<Integer> listOfIndex = findIndexOfUnits();
 
         Button key;
+        key = keyboard.get(Keyboard.TAB);
 
-        key = keyboard.get(Keyboard.RIGHT);
-        if (key.isPressed()){
-            cible = cible +1;
-            if (cible > listOfIndex.size()-1){
-                cible = 0;
-            }
-        }
-
-        key = keyboard.get(Keyboard.LEFT);
-        if (key.isPressed()){
-            cible = cible -1;
-            if (cible < 0){
-                cible = listOfIndex.size()-1;
-            }
-        }
-
-        key = keyboard.get(Keyboard.ENTER);
-        if (key.isPressed()){
-
-            Unit myUnit = this.getUnit();
-            ICWarsArea area = (ICWarsArea) this.getArea();
-            float damageOfUnit = myUnit.getDamage();
-            float victimHp = area.getUnitHp(cible);
-            int victimDefenseStars = area.getDefenseStarsUnit(cible);
-            float damage;
-            if (damageOfUnit-victimDefenseStars>0){
-                damage = damageOfUnit;}
-            else{damage = 0;}
-
-
-            area.attackUnit(cible,damage);
-
-            myUnit.becomeNotUsable();
-
+        if (listOfIndex.size() == 0 || key.isPressed()) {
             player.centerCamera();
+            player.setCurrentState(ICWarsPlayer.PlayerState.ACTION_SELECT);
+        }
+        else {
+
+
+            key = keyboard.get(Keyboard.RIGHT);
+            if (key.isPressed()) {
+                cible = cible + 1;
+                if (cible > listOfIndex.size() - 1) {
+                    cible = 0;
+                }
+            }
+
+            key = keyboard.get(Keyboard.LEFT);
+            if (key.isPressed()) {
+                cible = cible - 1;
+                if (cible < 0) {
+                    cible = listOfIndex.size() - 1;
+                }
+            }
+
+            key = keyboard.get(Keyboard.ENTER);
+            if (key.isPressed()) {
+
+                Unit myUnit = this.getUnit();
+                ICWarsArea area = (ICWarsArea) this.getArea();
+                float damageOfUnit = myUnit.getDamage();
+                float victimHp = area.getUnitHp(cible);
+                int victimDefenseStars = area.getDefenseStarsUnit(cible);
+                float damage;
+                if (damageOfUnit - victimDefenseStars > 0) {
+                    damage = damageOfUnit;
+                } else {
+                    damage = 0;
+                }
+
+
+                area.attackUnit(cible, damage);
+
+                myUnit.becomeNotUsable();
+
+                player.centerCamera();
+
+            }
 
         }
     }
