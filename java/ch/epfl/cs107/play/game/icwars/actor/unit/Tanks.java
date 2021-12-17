@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.icwars.actor;
+package ch.epfl.cs107.play.game.icwars.actor.unit;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
