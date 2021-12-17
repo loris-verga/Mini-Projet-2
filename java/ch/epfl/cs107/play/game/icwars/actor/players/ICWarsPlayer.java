@@ -140,7 +140,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
     /**
      * methode centerCamera permet de centrer la camera sur le joueur
      */
-    void centerCamera(){getOwnerArea().setViewCandidate(this);}
+    public void centerCamera(){getOwnerArea().setViewCandidate(this);}
 
     @Override
     public boolean takeCellSpace() {

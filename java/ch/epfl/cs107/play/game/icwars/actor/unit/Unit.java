@@ -1,13 +1,12 @@
 package ch.epfl.cs107.play.game.icwars.actor.unit;
 
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Interactable;
-import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.areagame.actor.Path;
-import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
+import ch.epfl.cs107.play.game.icwars.actor.unit.action.ICWarsAction;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsArea;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsBehavior;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsRange;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -17,11 +16,13 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.lang.annotation.Documented;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
-public abstract class Unit extends ICWarsActor {
+public abstract class Unit extends ICWarsActor implements Interactor {
 
     private ICWarsRange range;
+
 
     //La valeur d'unitHp doit être positive et a une valeur maximale
     private float unitHp;
@@ -34,6 +35,8 @@ public abstract class Unit extends ICWarsActor {
 
     public boolean markAsUsed;
 
+    private ICWarsUnitInteractionHandler handler;
+    private int defenseStarsOnCell;
 
     /**
      * Constructeur de la classe Unit
@@ -62,6 +65,8 @@ public abstract class Unit extends ICWarsActor {
 
         ICWarsArea area = (ICWarsArea) areaOwner;
         area.addUnitArea(this);
+
+        handler = new ICWarsUnitInteractionHandler();
     }
 
     /**
@@ -245,6 +250,11 @@ public abstract class Unit extends ICWarsActor {
         ((ICWarsInteractionVisitor)v).interactWith(this);
     }
 
+    @Override
+    public void interactWith(Interactable v){
+        v.acceptInteraction(handler);
+    }
+
     /**
      * méthode draw: permet de dessiner le sprite associé à l'unité
      * @param canvas target, not null
@@ -291,6 +301,34 @@ public abstract class Unit extends ICWarsActor {
         return movementRadius;
     }
 
+
+    public int getDefenseStarsOnCell(){
+        return defenseStarsOnCell;
+    }
+
+    private class ICWarsUnitInteractionHandler implements ICWarsInteractionVisitor{
+        public void interactWith(ICWarsBehavior.ICWarsCell cell){
+            defenseStarsOnCell = cell.getCellType().getDefenseStars();
+        }
+    }
+
+    //todo not sure
+    @Override
+    public boolean wantsCellInteraction() {
+        return true;
+    }
+
+    @Override
+    public List<DiscreteCoordinates> getFieldOfViewCells() {
+        return null;
+    }
+    @Override
+    public boolean wantsViewInteraction() {
+        return false;
+    }
+
+
+    public abstract ArrayList<ICWarsAction> getListOfActions();
 
 
 

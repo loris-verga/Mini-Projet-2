@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.icwars.area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.window.Window;
 
 
@@ -63,6 +64,10 @@ public class ICWarsBehavior extends AreaBehavior {
             System.out.println(type);
             return NONE;
         }
+
+        public int getDefenseStars(){
+            return defenseStars;
+        }
     }
     //Fin de l'énumération
 
@@ -107,6 +112,10 @@ public class ICWarsBehavior extends AreaBehavior {
         public ICWarsCell(int x, int y, ICWarsCellType type){
             super(x,y);
             this.type = type;
+        }
+
+        public ICWarsCellType getCellType(){
+            return type;
         }
 
 
@@ -178,7 +187,7 @@ public class ICWarsBehavior extends AreaBehavior {
          * @param v (AreaInteractionVisitor) : the visitor Le paramètre est le visiteur qui veut interagir (donc l'interacteur)
          */
         @Override
-        public void acceptInteraction(AreaInteractionVisitor v) {}
+        public void acceptInteraction(AreaInteractionVisitor v) {((ICWarsInteractionVisitor)v).interactWith(this);}
 
 
 

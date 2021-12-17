@@ -136,9 +136,10 @@ public class RealPlayer extends ICWarsPlayer {
                key = keyboard.get(Keyboard.ENTER);
 
                if (key.isPressed() && changePosition(getCurrentMainCellCoordinates()) && selectedUnit.changePosition(getCurrentMainCellCoordinates())){
-                   selectedUnit.becomeNotUsable();
+                   //todo chnag this if program works
+                   //selectedUnit.becomeNotUsable();
                    selectedUnit = null;
-                   changecurrentState(PlayerState.NORMAL);
+                   //changecurrentState(PlayerState.NORMAL);
                }
                break;
            }

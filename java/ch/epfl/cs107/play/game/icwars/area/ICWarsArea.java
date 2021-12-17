@@ -67,4 +67,26 @@ public abstract class ICWarsArea extends Area {
         return ICWars.CAMERA_SCALE_FACTOR;
     }
 
+
+
+    public float getUnitHp(int indexOfUnit){
+        Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
+        return unit.getHp();
+    }
+
+    public int getDefenseStarsUnit(int indexOfUnit){
+        Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
+        return unit.getDefenseStarsOnCell();
+    }
+
+    public void attackUnit(int indexOfUnit, float damage){
+        Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
+        unit.sufferAmountOfDamage(damage);
+    }
+
+
+    public void centerCameraOnUnit(int indexOfUnit){
+        this.setViewCandidate(listOfUnitsInTheArea.get(indexOfUnit));
+    }
+
 }
