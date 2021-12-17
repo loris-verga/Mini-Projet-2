@@ -172,4 +172,9 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
         }
     }
+
+
+    public void setCurrentState(PlayerState currentState) {
+        this.currentState = currentState;
+    }
 }

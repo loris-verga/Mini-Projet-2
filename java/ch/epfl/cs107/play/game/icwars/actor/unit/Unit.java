@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Path;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsArea;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsRange;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -57,6 +58,10 @@ public abstract class Unit extends ICWarsActor {
         int widthArea = areaOwner.getWidth();
         this.range = new ICWarsRange();
         this.range = initRange(coordinates.x, coordinates.y, movementRadius, widthArea, heightArea);
+
+
+        ICWarsArea area = (ICWarsArea) areaOwner;
+        area.addUnitArea(this);
     }
 
     /**
@@ -280,6 +285,10 @@ public abstract class Unit extends ICWarsActor {
             new Path(getCurrentMainCellCoordinates().toVector(),
                     path).draw(canvas);
         }
+    }
+
+    public int getMovementRadius(){
+        return movementRadius;
     }
 
 
