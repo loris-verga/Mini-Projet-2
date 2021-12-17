@@ -61,6 +61,7 @@ public class Tuto2 extends AreaGame {
 
 	@Override
 	public void end() {
+
 	}
 
 	@Override

@@ -1,9 +1,10 @@
 package ch.epfl.cs107.play.game.icwars.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
-public class Soldats extends Unit{
+public class Soldats extends Unit {
 
     private ICWarsTeamSide teamSide;
 

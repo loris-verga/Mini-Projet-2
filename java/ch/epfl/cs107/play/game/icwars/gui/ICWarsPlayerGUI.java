@@ -1,11 +1,8 @@
 package ch.epfl.cs107.play.game.icwars.gui;
 
 import ch.epfl.cs107.play.game.actor.Graphics;
-import ch.epfl.cs107.play.game.icwars.actor.Unit;
+import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
 import ch.epfl.cs107.play.game.icwars.actor.players.ICWarsPlayer;
-import ch.epfl.cs107.play.game.icwars.actor.players.RealPlayer;
-import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class ICWarsPlayerGUI implements Graphics {
