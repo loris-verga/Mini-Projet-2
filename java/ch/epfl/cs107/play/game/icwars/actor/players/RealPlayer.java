@@ -147,8 +147,6 @@ public class RealPlayer extends ICWarsPlayer {
            }
 
            case ACTION_SELECT:{
-               //todo remove
-               System.out.println("Selection");
                ArrayList<ICWarsAction> listOfActions = selectedUnit.getListOfActions();
                ArrayList<Integer> listOfKey = new ArrayList<>();
                for (ICWarsAction action : listOfActions){
@@ -165,8 +163,6 @@ public class RealPlayer extends ICWarsPlayer {
            }
 
            case ACTION:{
-               //todo remove
-               System.out.println("Action");
                for (ICWarsAction action : selectedUnit.getListOfActions()){
                    if (act==action.getKey()){
                        action.doAction(0, this, keyboard);

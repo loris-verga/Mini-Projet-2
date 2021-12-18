@@ -148,12 +148,16 @@ public class ICWars extends AreaGame{
                 break;
             }
             case END_TURN:{
+                ArrayList<ICWarsPlayer> listOfPlayersToRemove = new ArrayList<>();
+
                 for (ICWarsPlayer player : listOfPlayers){
-                    if (player.isPlayerDefeated()){
-                       listOfPlayers.remove(player);
-                       listOfFuturWaitingPlayer.remove(player);
-                    }
+                    if (player.isPlayerDefeated()){listOfPlayersToRemove.add(player);}}
+
+                for (ICWarsPlayer playerToRemove : listOfPlayersToRemove){
+                    listOfPlayers.remove(playerToRemove);
+                    listOfFuturWaitingPlayer.remove((playerToRemove));
                 }
+
                 if (listOfFuturWaitingPlayer.size()==1){switchGameState(gameState.END);}
                 else{
                     for(ICWarsPlayer player : listOfFuturWaitingPlayer){listOfCurrentWaitingPlayer.add(player);}
@@ -164,7 +168,6 @@ public class ICWars extends AreaGame{
             }
             case END:{
                 listOfFuturWaitingPlayer.clear();
-                listOfCurrentWaitingPlayer.clear();
                 nextArea();
                 break;
             }
