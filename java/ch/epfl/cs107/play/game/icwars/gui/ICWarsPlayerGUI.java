@@ -28,20 +28,14 @@ public class ICWarsPlayerGUI implements Graphics {
 
     @Override
     public void draw(Canvas canvas) {
-        //if (!(selectedUnit == null)) {
-        //    selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
-        //}
-        if (player.currentState == ICWarsPlayer.PlayerState.ACTION_SELECT){
-            icWarsActionPanel.setActions(selectedUnit.getListOfActions());
-            icWarsActionPanel.draw(canvas);
+        if (!(selectedUnit == null)) {
+            selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
+            if (player.currentState == ICWarsPlayer.PlayerState.ACTION_SELECT) {
+                icWarsActionPanel.setActions(selectedUnit.getListOfActions());
+                icWarsActionPanel.draw(canvas);
+            }
         }
         if (player.currentState == ICWarsPlayer.PlayerState.NORMAL || player.currentState == ICWarsPlayer.PlayerState.SELECT_CELL){
-            //todo not sure
-            if (!(selectedUnit == null)) {
-                selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
-
-
-            }
             icWarsInfoPanel.draw(canvas);
         }
 

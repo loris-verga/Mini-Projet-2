@@ -115,6 +115,7 @@ public class RealPlayer extends ICWarsPlayer {
            case IDLE: {break;}
 
            case NORMAL:{
+               selectedUnit = null;
                canMove();
                key = keyboard.get(Keyboard.ENTER) ;
                if (key.isPressed()){
@@ -141,8 +142,7 @@ public class RealPlayer extends ICWarsPlayer {
                if (key.isPressed() && changePosition(getCurrentMainCellCoordinates()) && selectedUnit.changePosition(getCurrentMainCellCoordinates())){
                    //todo chnag this if program works
                    //selectedUnit.becomeNotUsable();
-                   selectedUnit = null;
-                   //changecurrentState(PlayerState.NORMAL);
+                   changecurrentState(PlayerState.ACTION_SELECT);
                }
                break;
            }
@@ -160,21 +160,31 @@ public class RealPlayer extends ICWarsPlayer {
                        changecurrentState(PlayerState.ACTION);
                    }
                }
+
+
                break;
            }
 
            case ACTION:{
-               key = keyboard.get(Keyboard.A);
+               //todo verify
+               /**key = keyboard.get(Keyboard.A);
                if (act==key){
                    selectedUnit.getListOfActions().get(0).doAction(0, this, keyboard);
+                   selectedUnit = null;
                }
                key = keyboard.get(Keyboard.W);
                if (act==key) {
                    selectedUnit.getListOfActions().get(1).doAction(0, this, keyboard);
+                   selectedUnit = null;
+               }
+               */
+               for (ICWarsAction action : selectedUnit.getListOfActions()){
+                   if (act.equals(action.getKey())){
+                       action.doAction(0, this, keyboard);
+                   }
                }
                break;
            }
-               //todo later
        }
     }
 
@@ -236,7 +246,7 @@ public class RealPlayer extends ICWarsPlayer {
 
     @Override
     public void interactWith(Interactable v){
-        if (isDisplacementOccurs()==false) {
+        if (!isDisplacementOccurs()) {
             v.acceptInteraction(handler);
         }
     }

@@ -69,9 +69,7 @@ public class ICWarsBehavior extends AreaBehavior {
             return defenseStars;
         }
 
-        public String typeToString(){
-            return this.toString();
-        }
+        public String typeToString(){return this.toString();}
     }
     //Fin de l'énumération
 
@@ -192,9 +190,6 @@ public class ICWarsBehavior extends AreaBehavior {
          */
         @Override
         public void acceptInteraction(AreaInteractionVisitor v) {((ICWarsInteractionVisitor)v).interactWith(this);}
-
-
-
 
 
     }
