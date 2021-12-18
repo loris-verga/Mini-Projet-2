@@ -15,6 +15,8 @@ public class ICWarsPlayerGUI implements Graphics {
 
     public ICWarsPlayerGUI(float cameraScaleFactor, ICWarsPlayer player){
         this.player = player;
+        icWarsInfoPanel = new ICWarsInfoPanel(cameraScaleFactor);
+        icWarsActionPanel = new ICWarsActionsPanel(cameraScaleFactor);
 
     }
 
@@ -36,6 +38,8 @@ public class ICWarsPlayerGUI implements Graphics {
             }
         }
         if (player.currentState == ICWarsPlayer.PlayerState.NORMAL || player.currentState == ICWarsPlayer.PlayerState.SELECT_CELL){
+            //icWarsInfoPanel.setCurrentCell(player.getCurrentCells());
+            icWarsInfoPanel.setUnit(selectedUnit);
             icWarsInfoPanel.draw(canvas);
         }
 

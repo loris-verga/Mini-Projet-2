@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsArea;
 import ch.epfl.cs107.play.game.icwars.gui.ICWarsPlayerGUI;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
+    private ArrayList<Unit> listOfUnitsToRemove= new ArrayList<>();
     public ArrayList<Unit> listOfUnits = new ArrayList<>();
 
     protected ICWarsPlayerGUI playerGUI;
@@ -78,7 +80,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         SELECT_CELL,
         MOVE_UNIT,
         ACTION_SELECT,
-        ACTION;
+        ACTION
 
     }
 
@@ -89,7 +91,7 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         currentState = PlayerState.NORMAL;
         centerCamera();
 
-        for (Unit unit: listOfUnits){unit.becomeUsable();}
+        //for (Unit unit: listOfUnits){unit.becomeUsable();}
     }
 
     /**
@@ -112,18 +114,17 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
      */
     @Override
     public void update(float deltaTime) {
-        ArrayList<Integer> listOfIndexToRemove= new ArrayList<>();
 
-        //todo not sure
         for (Unit unit : listOfUnits){
             if (unit.isDead()){
                 getOwnerArea().unregisterActor(unit);
-                listOfIndexToRemove.add(listOfUnits.indexOf(unit));
+                listOfUnitsToRemove.add(unit);
             }
         }
-        for (int j=0; j < listOfIndexToRemove.size(); j++){
-            listOfUnits.remove(listOfIndexToRemove.get(j));
+        for (Unit unitToRemove: listOfUnitsToRemove){
+            listOfUnits.remove(unitToRemove);
         }
+        listOfUnitsToRemove.clear();
 
         super.update(deltaTime);
     }

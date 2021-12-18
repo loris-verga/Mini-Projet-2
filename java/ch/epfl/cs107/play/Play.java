@@ -14,7 +14,8 @@ import ch.epfl.cs107.play.window.swing.SwingWindow;
 /**
  * Main entry point.
  */
-public class Play {
+public class
+Play {
 
 	/** One second in nano second */
     private static final float ONE_SEC = 1E9f;

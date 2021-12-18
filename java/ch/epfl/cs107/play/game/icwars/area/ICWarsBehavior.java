@@ -70,6 +70,7 @@ public class ICWarsBehavior extends AreaBehavior {
         }
 
         public String typeToString(){return this.toString();}
+
     }
     //Fin de l'énumération
 

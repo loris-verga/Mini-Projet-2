@@ -26,7 +26,7 @@ public class RealPlayer extends ICWarsPlayer {
     private Sprite sprite;
     private String associatedImage;
     private final static int MOVE_DURATION = 8;
-    private Button act;
+    private Integer act;
 
     ICWarsPlayerInteractionHandler handler;
     /**
@@ -76,7 +76,7 @@ public class RealPlayer extends ICWarsPlayer {
     /**
      * methode changecurrentState permet de changer l'etat courant du joueur
      */
-    public void changecurrentState(PlayerState NewState){currentState = NewState;}
+    //public void setCurrentState(PlayerState NewState){currentState = NewState;}
 
     /**
      * methode canMove donne la possibilite au joueur de bouger
@@ -119,19 +119,20 @@ public class RealPlayer extends ICWarsPlayer {
                canMove();
                key = keyboard.get(Keyboard.ENTER) ;
                if (key.isPressed()){
-                   changecurrentState(PlayerState.SELECT_CELL);
+                   setCurrentState(PlayerState.SELECT_CELL);
                    break;
                }
                key = keyboard.get(Keyboard.TAB);
                if (key.isPressed()){
-                   changecurrentState(PlayerState.IDLE);
+                   setCurrentState(PlayerState.IDLE);
                }
            }
 
            case SELECT_CELL: {
                canMove();
 
-               if (selectedUnit!=null) {changecurrentState(PlayerState.MOVE_UNIT);}
+               if (selectedUnit!=null) {
+                   setCurrentState(PlayerState.MOVE_UNIT);}
                else{onLeaving(getCurrentCells());}
                break;
            }
@@ -140,14 +141,14 @@ public class RealPlayer extends ICWarsPlayer {
                key = keyboard.get(Keyboard.ENTER);
 
                if (key.isPressed() && changePosition(getCurrentMainCellCoordinates()) && selectedUnit.changePosition(getCurrentMainCellCoordinates())){
-                   //todo chnag this if program works
-                   //selectedUnit.becomeNotUsable();
-                   changecurrentState(PlayerState.ACTION_SELECT);
+                   setCurrentState(PlayerState.ACTION_SELECT);
                }
                break;
            }
 
            case ACTION_SELECT:{
+               //todo remove
+               System.out.println("Selection");
                ArrayList<ICWarsAction> listOfActions = selectedUnit.getListOfActions();
                ArrayList<Integer> listOfKey = new ArrayList<>();
                for (ICWarsAction action : listOfActions){
@@ -156,30 +157,18 @@ public class RealPlayer extends ICWarsPlayer {
                for (Integer selectedKey : listOfKey){
                    Button theKey = keyboard.get(selectedKey);
                    if (theKey.isPressed()){
-                       act = theKey;
-                       changecurrentState(PlayerState.ACTION);
+                       act=selectedKey;
+                       setCurrentState(PlayerState.ACTION);
                    }
                }
-
-
                break;
            }
 
            case ACTION:{
-               //todo verify
-               /**key = keyboard.get(Keyboard.A);
-               if (act==key){
-                   selectedUnit.getListOfActions().get(0).doAction(0, this, keyboard);
-                   selectedUnit = null;
-               }
-               key = keyboard.get(Keyboard.W);
-               if (act==key) {
-                   selectedUnit.getListOfActions().get(1).doAction(0, this, keyboard);
-                   selectedUnit = null;
-               }
-               */
+               //todo remove
+               System.out.println("Action");
                for (ICWarsAction action : selectedUnit.getListOfActions()){
-                   if (act.equals(action.getKey())){
+                   if (act==action.getKey()){
                        action.doAction(0, this, keyboard);
                    }
                }

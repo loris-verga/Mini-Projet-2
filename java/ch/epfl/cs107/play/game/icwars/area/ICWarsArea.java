@@ -20,6 +20,8 @@ public abstract class ICWarsArea extends Area {
         listOfUnitsInTheArea.add(unit);
     }
 
+    public void removeUnitArea(Unit unit){listOfUnitsInTheArea.remove(unit);}
+
     public ArrayList <Integer> getListOfIndexOfUnitsInRange(float fromX, float fromY, float radius, ICWarsActor.ICWarsTeamSide victimTeamSide){
         ArrayList <Integer> listOfIndex = new ArrayList<>();
         for (int i = 0; i<listOfUnitsInTheArea.size(); ++i){
