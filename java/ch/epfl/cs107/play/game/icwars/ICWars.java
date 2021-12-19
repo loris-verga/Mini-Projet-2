@@ -203,11 +203,11 @@ public class ICWars extends AreaGame{
         Unit tank1 = new Tanks( area , new DiscreteCoordinates(2,5), teamSidePlayer1);
         Unit soldier1 = new Soldats( area, new DiscreteCoordinates(3,5), teamSidePlayer1);
 
-        //Unit tank2 = new Tanks( area , new DiscreteCoordinates(8,5), teamSidePlayer2);
+        Unit tank2 = new Tanks( area , new DiscreteCoordinates(8,5), teamSidePlayer2);
         Unit soldier2 = new Soldats( area, new DiscreteCoordinates(9,5), teamSidePlayer2);
 
         int[][] Player2CoordinatesForArea={{ 7 , 4 } , { 17 , 5 }};
-        Player2 = new RealPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2);
+        Player2 = new RealPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2, tank2);
         Player2.enterArea(area, new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]));
 
         int[][] Player1CoordinatesForArea={{ 0 , 0 } , { 2 , 5 } };

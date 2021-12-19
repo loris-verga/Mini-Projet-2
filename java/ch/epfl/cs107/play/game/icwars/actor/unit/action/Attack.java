@@ -19,6 +19,8 @@ public class Attack extends ICWarsAction{
     ImageGraphics cursor;
 
     private int targetIndexInIndexList;
+    private int targetUnitIndex;
+    private ArrayList<Integer> listOfIndex;
 
     public Attack(Area area, Unit unit){
         super(area, unit);
@@ -27,12 +29,10 @@ public class Attack extends ICWarsAction{
 
     @Override
     public void draw(Canvas canvas) {
-        ArrayList<Integer> list = findIndexOfUnits();
-        if (list == null) {}
-        else{
-            ICWarsArea area = (ICWarsArea)this.getArea();
-            area.centerCameraOnUnit(targetIndexInIndexList);
+        if (!(listOfIndex.isEmpty())) {
 
+            ICWarsArea area = (ICWarsArea)this.getArea();
+            area.centerCameraOnUnit(targetUnitIndex);
 
             cursor.setAnchor(canvas.getPosition().add(1,0));
             cursor.draw(canvas);
@@ -71,7 +71,7 @@ public class Attack extends ICWarsAction{
 
     @Override
     public  void doAction(float dt, ICWarsPlayer player , Keyboard keyboard) {
-        ArrayList<Integer> listOfIndex = findIndexOfUnits();
+        listOfIndex = findIndexOfUnits();
 
         Button key;
         key = keyboard.get(Keyboard.TAB);
@@ -97,12 +97,11 @@ public class Attack extends ICWarsAction{
                     targetIndexInIndexList = listOfIndex.size() - 1;
                 }
             }
-
             key = keyboard.get(Keyboard.ENTER);
             if (key.isPressed()) {
 
                 Unit myUnit = this.getUnit();
-                int targetUnitIndex = listOfIndex.get(targetIndexInIndexList);
+                targetUnitIndex = listOfIndex.get(targetIndexInIndexList);
                 ICWarsArea area = (ICWarsArea) this.getArea();
                 float damageOfUnit = myUnit.getDamage();
                 int victimDefenseStars = area.getDefenseStarsUnit(targetUnitIndex);

@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.actor.Graphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.icwars.actor.players.ICWarsPlayer;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
+import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 public abstract class ICWarsAction implements Graphics {
@@ -21,8 +22,6 @@ public abstract class ICWarsAction implements Graphics {
     protected Area getArea(){return area;}
 
     protected Unit getUnit(){return unit;}
-
-
 
     public abstract String getName();
 
