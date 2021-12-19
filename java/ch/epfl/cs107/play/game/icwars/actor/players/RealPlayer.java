@@ -203,9 +203,7 @@ public class RealPlayer extends ICWarsPlayer {
         if (getcurrentState()!=PlayerState.IDLE){
             sprite.draw(canvas);
         }
-        if (getcurrentState()==PlayerState.MOVE_UNIT) {
-            playerGUI.draw(canvas);
-        }
+        playerGUI.draw(canvas);
     }
 
     @Override
@@ -248,10 +246,16 @@ public class RealPlayer extends ICWarsPlayer {
     private class ICWarsPlayerInteractionHandler implements ICWarsInteractionVisitor {
         //todo imteraction with cell to get cell type
         public void interactWith(ICWarsBehavior.ICWarsCell cell){
-            cellType = cell.getCellType();
+            if (currentState==PlayerState.NORMAL || currentState==PlayerState.SELECT_CELL) {
+                cellType = cell.getCellType();
+                playerGUI.setCellInfoPanel(cellType);
+            }
         }
 
         public void interactWith(Unit unit) {
+            if (currentState==PlayerState.SELECT_CELL || currentState==PlayerState.NORMAL){
+                playerGUI.setUnitInfoPanel(unit);
+            }
             if (currentState==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.markAsUsed==false){
                 for (int i = 0; i < listOfUnits.size(); ++i) {
                     if (unit == listOfUnits.get(i)) {

@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.actor.Graphics;
 import ch.epfl.cs107.play.game.icwars.actor.players.RealPlayer;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
 import ch.epfl.cs107.play.game.icwars.actor.players.ICWarsPlayer;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsBehavior;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class ICWarsPlayerGUI implements Graphics {
@@ -26,26 +27,26 @@ public class ICWarsPlayerGUI implements Graphics {
         selectedUnit = unit;
     }
 
-
-
+    public void setUnitInfoPanel(Unit unit){icWarsInfoPanel.setUnit(unit);}
+    public void setCellInfoPanel(ICWarsBehavior.ICWarsCellType cellType){icWarsInfoPanel.setCurrentCell(cellType);}
 
     @Override
     public void draw(Canvas canvas) {
-        RealPlayer player1 = (RealPlayer) player;
-
-        if (!(selectedUnit == null)) {
-            selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
-            if (player.currentState == ICWarsPlayer.PlayerState.ACTION_SELECT) {
+        switch (player.currentState){
+            case NORMAL:{}
+            case SELECT_CELL:{
+                icWarsInfoPanel.draw(canvas);
+                break;
+            }
+            case MOVE_UNIT:{
+                selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
+                break;
+            }
+            case ACTION_SELECT:{
                 icWarsActionPanel.setActions(selectedUnit.getListOfActions());
                 icWarsActionPanel.draw(canvas);
+                break;
             }
         }
-        if (player.currentState == ICWarsPlayer.PlayerState.NORMAL || player.currentState == ICWarsPlayer.PlayerState.SELECT_CELL){
-            icWarsInfoPanel.setCurrentCell(player1.getPlayerCellType());
-            icWarsInfoPanel.setUnit(selectedUnit);
-            icWarsInfoPanel.draw(canvas);
-        }
-
-
     }
 }
