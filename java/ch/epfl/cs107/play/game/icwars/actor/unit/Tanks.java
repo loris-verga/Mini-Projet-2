@@ -17,6 +17,9 @@ public class Tanks extends Unit {
 
     private ArrayList <ICWarsAction> listOfActions;
 
+    //todo I added this
+    private Attack attack;
+
     /**
      * Constructeur de la classe Tank
      * @param areaOwner l'aire à laquelle appartient le tank
@@ -39,7 +42,8 @@ public class Tanks extends Unit {
         listOfActions.add(new Attack(areaOwner, this));
         listOfActions.add(new Wait(areaOwner, this));
 
-
+        //todo I added this
+        attack = new Attack(areaOwner, this);
 
 
     }

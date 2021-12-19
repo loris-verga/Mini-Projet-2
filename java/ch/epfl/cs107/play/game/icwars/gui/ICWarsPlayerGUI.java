@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.icwars.gui;
 
 import ch.epfl.cs107.play.game.actor.Graphics;
+import ch.epfl.cs107.play.game.icwars.actor.players.RealPlayer;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
 import ch.epfl.cs107.play.game.icwars.actor.players.ICWarsPlayer;
 import ch.epfl.cs107.play.window.Canvas;
@@ -30,6 +31,8 @@ public class ICWarsPlayerGUI implements Graphics {
 
     @Override
     public void draw(Canvas canvas) {
+        RealPlayer player1 = (RealPlayer) player;
+
         if (!(selectedUnit == null)) {
             selectedUnit.drawRangeAndPathTo(player.getCurrentCells().get(0), canvas);
             if (player.currentState == ICWarsPlayer.PlayerState.ACTION_SELECT) {
@@ -38,7 +41,7 @@ public class ICWarsPlayerGUI implements Graphics {
             }
         }
         if (player.currentState == ICWarsPlayer.PlayerState.NORMAL || player.currentState == ICWarsPlayer.PlayerState.SELECT_CELL){
-            //icWarsInfoPanel.setCurrentCell(player.getCurrentCells());
+            icWarsInfoPanel.setCurrentCell(player1.getPlayerCellType());
             icWarsInfoPanel.setUnit(selectedUnit);
             icWarsInfoPanel.draw(canvas);
         }

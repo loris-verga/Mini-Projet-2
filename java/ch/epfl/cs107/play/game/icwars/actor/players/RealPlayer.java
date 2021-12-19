@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
 import ch.epfl.cs107.play.game.icwars.actor.unit.action.ICWarsAction;
+import ch.epfl.cs107.play.game.icwars.area.ICWarsBehavior;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
@@ -28,7 +29,10 @@ public class RealPlayer extends ICWarsPlayer {
     private final static int MOVE_DURATION = 8;
     private Integer act;
 
-    ICWarsPlayerInteractionHandler handler;
+    //todo remove this if doesnt work
+    private ICWarsBehavior.ICWarsCellType cellType;
+
+    private ICWarsPlayerInteractionHandler handler;
     /**
      * constructeur de RealPlayer
      * @param teamSide : faction du joueur
@@ -236,14 +240,18 @@ public class RealPlayer extends ICWarsPlayer {
         }
     }
 
+    public ICWarsBehavior.ICWarsCellType getPlayerCellType(){return cellType;}
+
     /**
      * class imbriquer ICWarsPlayerInteractionHandler prendre en charge les interactions entre les joueurs et les unites
      */
     private class ICWarsPlayerInteractionHandler implements ICWarsInteractionVisitor {
-
+        //todo imteraction with cell to get cell type
+        public void interactWith(ICWarsBehavior.ICWarsCell cell){
+            cellType = cell.getCellType();
+        }
 
         public void interactWith(Unit unit) {
-            //todo not sure about this
             if (currentState==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.markAsUsed==false){
                 for (int i = 0; i < listOfUnits.size(); ++i) {
                     if (unit == listOfUnits.get(i)) {

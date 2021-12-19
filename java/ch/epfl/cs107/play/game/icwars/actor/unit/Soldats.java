@@ -16,6 +16,8 @@ public class Soldats extends Unit {
 
     private ArrayList<ICWarsAction> listOfActions;
 
+    private Attack attack;
+    private Wait wait;
 
     public Soldats(Area areaOwner, DiscreteCoordinates position, ICWarsTeamSide teamSide){
         super(teamSide, areaOwner, position,5.f, 2);
@@ -29,10 +31,10 @@ public class Soldats extends Unit {
         }
 
         listOfActions = new ArrayList<>();
-        listOfActions.add(new Attack(areaOwner, this));
-        listOfActions.add(new Wait(areaOwner, this));
-
-
+        attack = new Attack(areaOwner, this);
+        listOfActions.add(attack);
+        wait = new Wait(areaOwner, this);
+        listOfActions.add(wait);
 
 
     }

@@ -25,11 +25,12 @@ public class Attack extends ICWarsAction{
     public Attack(Area area, Unit unit){
         super(area, unit);
         cursor = new ImageGraphics(ResourcePath.getSprite("icwars/UIpackSheet"), 1f, 1f, new RegionOfInterest(4*18, 26*18,16,16));
+        cursor.setDepth(90.f);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!(listOfIndex.isEmpty())) {
+        if (listOfIndex!=null && !(listOfIndex.isEmpty())) {
 
             ICWarsArea area = (ICWarsArea)this.getArea();
             area.centerCameraOnUnit(targetUnitIndex);
@@ -81,7 +82,7 @@ public class Attack extends ICWarsAction{
             player.setCurrentState(ICWarsPlayer.PlayerState.ACTION_SELECT);
         }
         else {
-
+            targetUnitIndex = listOfIndex.get(targetIndexInIndexList);
             key = keyboard.get(Keyboard.RIGHT);
             if (key.isPressed()) {
                 targetIndexInIndexList += 1;
@@ -101,7 +102,6 @@ public class Attack extends ICWarsAction{
             if (key.isPressed()) {
 
                 Unit myUnit = this.getUnit();
-                targetUnitIndex = listOfIndex.get(targetIndexInIndexList);
                 ICWarsArea area = (ICWarsArea) this.getArea();
                 float damageOfUnit = myUnit.getDamage();
                 int victimDefenseStars = area.getDefenseStarsUnit(targetUnitIndex);
@@ -114,6 +114,7 @@ public class Attack extends ICWarsAction{
 
                 area.attackUnit(targetUnitIndex, damage);
 
+                listOfIndex=null;
                 myUnit.becomeNotUsable();
                 player.centerCamera();
                 player.setCurrentState(ICWarsPlayer.PlayerState.NORMAL);

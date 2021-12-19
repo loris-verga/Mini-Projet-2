@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
+import ch.epfl.cs107.play.game.icwars.actor.unit.action.Attack;
 import ch.epfl.cs107.play.game.icwars.actor.unit.action.ICWarsAction;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsArea;
 import ch.epfl.cs107.play.game.icwars.area.ICWarsBehavior;
@@ -22,7 +23,6 @@ import java.util.Queue;
 public abstract class Unit extends ICWarsActor implements Interactor {
 
     private ICWarsRange range;
-
 
     //La valeur d'unitHp doit être positive et a une valeur maximale
     private float unitHp;
@@ -268,6 +268,10 @@ public abstract class Unit extends ICWarsActor implements Interactor {
     @Override
     public void draw(Canvas canvas){
         sprite.draw(canvas);
+        //todo not sure
+            for (ICWarsAction action: getListOfActions()) {
+                action.draw(canvas);
+            }
     }
 
     /**
@@ -318,7 +322,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         }
     }
 
-    //todo not sure
     @Override
     public boolean wantsCellInteraction() {
         return true;
