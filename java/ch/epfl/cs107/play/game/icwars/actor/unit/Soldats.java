@@ -41,7 +41,8 @@ public class Soldats extends Unit {
 
 
     public String getName(){
-        return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlySoldier" : "icwars/enemySoldier";
+        //return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlySoldier" : "icwars/enemySoldier";
+        return "Soldier";
     }
 
     @Override

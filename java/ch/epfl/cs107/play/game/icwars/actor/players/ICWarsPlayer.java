@@ -6,7 +6,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
-import ch.epfl.cs107.play.game.icwars.area.ICWarsArea;
 import ch.epfl.cs107.play.game.icwars.gui.ICWarsPlayerGUI;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -21,13 +20,13 @@ import java.util.List;
 public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
     private ArrayList<Unit> listOfUnitsToRemove= new ArrayList<>();
-    public ArrayList<Unit> listOfUnits = new ArrayList<>();
+    protected ArrayList<Unit> listOfUnits = new ArrayList<>();
 
     protected ICWarsPlayerGUI playerGUI;
 
     protected Unit selectedUnit;
-    //todo mettre en private si possible
-    public PlayerState currentState;
+
+    private PlayerState currentPlayerState;
 
     /**
      *  constructeur de la classe ICWarsPlayer
@@ -46,11 +45,11 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
               area.registerActor(unit);
         }
 
-        playerGUI = new ICWarsPlayerGUI(0.f, this);
+        playerGUI = new ICWarsPlayerGUI(13.f, this);
 
         selectedUnit = null;
 
-        currentState = PlayerState.IDLE;
+        currentPlayerState = PlayerState.IDLE;
     }
 
     @Override
@@ -81,17 +80,14 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         MOVE_UNIT,
         ACTION_SELECT,
         ACTION
-
     }
 
     /**
      * methode startTurn permet de commencer le tour du joueur, lui donner ces unites et centrer la camera sur lui
      */
     public void startTurn(){
-        currentState = PlayerState.NORMAL;
+        currentPlayerState = PlayerState.NORMAL;
         centerCamera();
-
-        //for (Unit unit: listOfUnits){unit.becomeUsable();}
     }
 
     /**
@@ -100,7 +96,8 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
      */
     @Override
     public void onLeaving(List<DiscreteCoordinates> coordinates){
-        if (currentState == PlayerState.SELECT_CELL){currentState = PlayerState.NORMAL;}
+        if (currentPlayerState == PlayerState.SELECT_CELL){
+            currentPlayerState = PlayerState.NORMAL;}
     }
 
     @Override
@@ -174,8 +171,18 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
         }
     }
 
-
-    public void setCurrentState(PlayerState currentState) {
-        this.currentState = currentState;
+    public void makeUnitsUsable(){
+        for (Unit unit: listOfUnits){unit.becomeUsable();}
     }
+
+    /**
+     * methode getcurrentState permet de voir l'etat courant du joueur
+     * @return currentState l'etat current du joueur
+     */
+    public PlayerState getCurrentPlayerState(){return this.currentPlayerState;}
+
+    /**
+     * methode setcurrentState changer l'etat courant du joueur
+     */
+    public void setCurrentPlayerState(PlayerState currentPlayerState) {this.currentPlayerState = currentPlayerState;}
 }

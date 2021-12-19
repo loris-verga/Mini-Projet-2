@@ -29,9 +29,7 @@ public class RealPlayer extends ICWarsPlayer {
     private final static int MOVE_DURATION = 8;
     private Integer act;
 
-    //todo remove this if doesnt work
     private ICWarsBehavior.ICWarsCellType cellType;
-
     private ICWarsPlayerInteractionHandler handler;
     /**
      * constructeur de RealPlayer
@@ -70,17 +68,6 @@ public class RealPlayer extends ICWarsPlayer {
         updateState();
     }
 
-    /**
-     * methode getcurrentState permet de voir l'etat courant du joueur
-     * @return currentState l'etat current du joueur
-     */
-    public PlayerState getcurrentState(){return currentState;}
-
-
-    /**
-     * methode changecurrentState permet de changer l'etat courant du joueur
-     */
-    //public void setCurrentState(PlayerState NewState){currentState = NewState;}
 
     /**
      * methode canMove donne la possibilite au joueur de bouger
@@ -114,7 +101,7 @@ public class RealPlayer extends ICWarsPlayer {
         Keyboard keyboard = getOwnerArea().getKeyboard() ;
         Button key;
 
-       switch (currentState){
+       switch (getCurrentPlayerState()){
 
            case IDLE: {break;}
 
@@ -123,12 +110,12 @@ public class RealPlayer extends ICWarsPlayer {
                canMove();
                key = keyboard.get(Keyboard.ENTER) ;
                if (key.isPressed()){
-                   setCurrentState(PlayerState.SELECT_CELL);
+                   setCurrentPlayerState(PlayerState.SELECT_CELL);
                    break;
                }
                key = keyboard.get(Keyboard.TAB);
                if (key.isPressed()){
-                   setCurrentState(PlayerState.IDLE);
+                   setCurrentPlayerState(PlayerState.IDLE);
                }
            }
 
@@ -136,7 +123,7 @@ public class RealPlayer extends ICWarsPlayer {
                canMove();
 
                if (selectedUnit!=null) {
-                   setCurrentState(PlayerState.MOVE_UNIT);}
+                   setCurrentPlayerState(PlayerState.MOVE_UNIT);}
                else{onLeaving(getCurrentCells());}
                break;
            }
@@ -145,7 +132,7 @@ public class RealPlayer extends ICWarsPlayer {
                key = keyboard.get(Keyboard.ENTER);
 
                if (key.isPressed() && changePosition(getCurrentMainCellCoordinates()) && selectedUnit.changePosition(getCurrentMainCellCoordinates())){
-                   setCurrentState(PlayerState.ACTION_SELECT);
+                   setCurrentPlayerState(PlayerState.ACTION_SELECT);
                }
                break;
            }
@@ -160,7 +147,7 @@ public class RealPlayer extends ICWarsPlayer {
                    Button theKey = keyboard.get(selectedKey);
                    if (theKey.isPressed()){
                        act=selectedKey;
-                       setCurrentState(PlayerState.ACTION);
+                       setCurrentPlayerState(PlayerState.ACTION);
                    }
                }
                break;
@@ -200,7 +187,7 @@ public class RealPlayer extends ICWarsPlayer {
 
     @Override
     public void draw(Canvas canvas) {
-        if (getcurrentState()!=PlayerState.IDLE){
+        if (getCurrentPlayerState()!=PlayerState.IDLE){
             sprite.draw(canvas);
         }
         playerGUI.draw(canvas);
@@ -238,25 +225,22 @@ public class RealPlayer extends ICWarsPlayer {
         }
     }
 
-    public ICWarsBehavior.ICWarsCellType getPlayerCellType(){return cellType;}
-
     /**
      * class imbriquer ICWarsPlayerInteractionHandler prendre en charge les interactions entre les joueurs et les unites
      */
     private class ICWarsPlayerInteractionHandler implements ICWarsInteractionVisitor {
-        //todo imteraction with cell to get cell type
         public void interactWith(ICWarsBehavior.ICWarsCell cell){
-            if (currentState==PlayerState.NORMAL || currentState==PlayerState.SELECT_CELL) {
+            if (getCurrentPlayerState()==PlayerState.NORMAL || getCurrentPlayerState()==PlayerState.SELECT_CELL) {
                 cellType = cell.getCellType();
                 playerGUI.setCellInfoPanel(cellType);
             }
         }
 
         public void interactWith(Unit unit) {
-            if (currentState==PlayerState.SELECT_CELL || currentState==PlayerState.NORMAL){
+            if (getCurrentPlayerState()==PlayerState.SELECT_CELL || getCurrentPlayerState()==PlayerState.NORMAL){
                 playerGUI.setUnitInfoPanel(unit);
             }
-            if (currentState==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.markAsUsed==false){
+            if (getCurrentPlayerState()==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.markAsUsed==false){
                 for (int i = 0; i < listOfUnits.size(); ++i) {
                     if (unit == listOfUnits.get(i)) {
                         selectUnit(i);

@@ -31,7 +31,7 @@ public class Wait extends ICWarsAction{
 
     public void doAction(float dt, ICWarsPlayer player , Keyboard keyboard){
         this.getUnit().becomeNotUsable();
-        player.setCurrentState(ICWarsPlayer.PlayerState.NORMAL);
+        player.setCurrentPlayerState(ICWarsPlayer.PlayerState.NORMAL);
     }
 
 

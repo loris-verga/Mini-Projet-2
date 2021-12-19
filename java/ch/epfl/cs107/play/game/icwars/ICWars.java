@@ -133,7 +133,7 @@ public class ICWars extends AreaGame{
                 break;
             }
             case PLAYER_TURN:{
-                if (currentPlayer.currentState.equals(ICWarsPlayer.PlayerState.IDLE)){switchGameState(GameState.END_PLAYER_TURN);}
+                if (currentPlayer.getCurrentPlayerState().equals(ICWarsPlayer.PlayerState.IDLE)){switchGameState(GameState.END_PLAYER_TURN);}
                 break;
             }
             case END_PLAYER_TURN:{
@@ -142,7 +142,7 @@ public class ICWars extends AreaGame{
                 }
                 else{
                     listOfFuturWaitingPlayer.add(currentPlayer);
-                    for (Unit unit: currentPlayer.listOfUnits){unit.becomeUsable();}
+                    currentPlayer.makeUnitsUsable();
                 }
                 switchGameState(GameState.CHOOSE_PLAYER);
                 break;

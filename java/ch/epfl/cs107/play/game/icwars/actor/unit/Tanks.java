@@ -51,7 +51,8 @@ public class Tanks extends Unit {
 
 
     public String getName(){
-        return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlyTank" : "icwars/enemyTank";
+        //return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlyTank" : "icwars/enemyTank";
+        return "Tank";
     }
 
     @Override

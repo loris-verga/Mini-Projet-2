@@ -79,7 +79,7 @@ public class Attack extends ICWarsAction{
 
         if (listOfIndex.size() == 0 || key.isPressed()) {
             player.centerCamera();
-            player.setCurrentState(ICWarsPlayer.PlayerState.ACTION_SELECT);
+            player.setCurrentPlayerState(ICWarsPlayer.PlayerState.ACTION_SELECT);
         }
         else {
             targetUnitIndex = listOfIndex.get(targetIndexInIndexList);
@@ -117,7 +117,7 @@ public class Attack extends ICWarsAction{
                 listOfIndex=null;
                 myUnit.becomeNotUsable();
                 player.centerCamera();
-                player.setCurrentState(ICWarsPlayer.PlayerState.NORMAL);
+                player.setCurrentPlayerState(ICWarsPlayer.PlayerState.NORMAL);
             }
 
         }
