@@ -34,5 +34,9 @@ public class Wait extends ICWarsAction{
         player.setCurrentPlayerState(ICWarsPlayer.PlayerState.NORMAL);
     }
 
+    public void doAutoAction(float dt, ICWarsPlayer player){
+        this.getUnit().becomeNotUsable();
+        player.setCurrentPlayerState(ICWarsPlayer.PlayerState.NORMAL);
+    }
 
 }

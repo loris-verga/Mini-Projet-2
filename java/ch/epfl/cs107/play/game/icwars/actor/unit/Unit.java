@@ -37,8 +37,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
 
     private ICWarsUnitInteractionHandler handler;
     private int defenseStarsOnCell;
-
-    //todo I added this so that I can remove units to area
     private ICWarsArea area;
 
     /**
@@ -66,8 +64,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         this.range = initRange(coordinates.x, coordinates.y, movementRadius, widthArea, heightArea);
 
         area = (ICWarsArea) areaOwner;
-        //todo I have chnaged this so that I can remove units from area
-        //ICWarsArea area = (ICWarsArea) areaOwner;
         area.addUnitArea(this);
 
         handler = new ICWarsUnitInteractionHandler();
@@ -218,7 +214,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         boolean dead = false;
         if (unitHp == 0.f){
             dead = true;
-            //todo I added this read above 3
             area.removeUnitArea(this);
         }
         return dead;
@@ -268,7 +263,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
     @Override
     public void draw(Canvas canvas){
         sprite.draw(canvas);
-        //todo not sure
             for (ICWarsAction action: getListOfActions()) {
                 action.draw(canvas);
             }

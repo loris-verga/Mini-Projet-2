@@ -8,6 +8,7 @@ package ch.epfl.cs107.play.game.icwars;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.icwars.actor.ICWarsActor;
+import ch.epfl.cs107.play.game.icwars.actor.players.AIPlayer;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Soldats;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Tanks;
 import ch.epfl.cs107.play.game.icwars.actor.unit.Unit;
@@ -99,8 +100,7 @@ public class ICWars extends AreaGame{
 
         key = keyboard.get(Keyboard.R) ;
         if (key.isPressed()) {
-            //todo not sure
-            areaIndex-=1;
+            areaIndex=-1;
             switchGameState(GameState.END);
         }
 
@@ -168,6 +168,7 @@ public class ICWars extends AreaGame{
             }
             case END:{
                 listOfFuturWaitingPlayer.clear();
+                listOfCurrentWaitingPlayer.clear();
                 nextArea();
                 break;
             }
@@ -207,7 +208,7 @@ public class ICWars extends AreaGame{
         Unit soldier2 = new Soldats( area, new DiscreteCoordinates(9,5), teamSidePlayer2);
 
         int[][] Player2CoordinatesForArea={{ 7 , 4 } , { 17 , 5 }};
-        Player2 = new RealPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2, tank2);
+        Player2 = new AIPlayer(teamSidePlayer2 , area , new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]), soldier2, tank2);
         Player2.enterArea(area, new DiscreteCoordinates(Player2CoordinatesForArea[areaIndex][0],Player2CoordinatesForArea[areaIndex][1]));
 
         int[][] Player1CoordinatesForArea={{ 0 , 0 } , { 2 , 5 } };
