@@ -16,18 +16,36 @@ import java.util.ArrayList;
 
 public class Attack extends ICWarsAction{
 
+    //attribut graphique associé au curseur afin de le dessiner
     ImageGraphics cursor;
 
-    private int targetIndexInIndexList;
+
+    //Index de l'unité que l'on veut attaquer (réfère à la liste d'unité se trouvant dans Area)
     private int targetUnitIndex;
+
+    //Cette liste contient la liste des index des unités qui sont de le camp adverse de l'unité sélectionnée.
     private ArrayList<Integer> listOfIndex;
 
+    //Index de l'unité ennemie dans la liste d'index des unités ennemies.
+    private int targetIndexInIndexList;
+
+    /**
+     * Constructeur de la classe Attack
+     * @param area l'aire sur laquelle se déroule l'attaque
+     * @param unit l'unité à laquelle l'action est attribuée
+     */
     public Attack(Area area, Unit unit){
         super(area, unit);
         cursor = new ImageGraphics(ResourcePath.getSprite("icwars/UIpackSheet"), 1f, 1f, new RegionOfInterest(4*18, 26*18,16,16));
         cursor.setDepth(90.f);
     }
 
+
+    /**
+     * Méthode draw de l'action attaque :
+     * Cette méthode va dessiner le curseur
+     * @param canvas target, not null
+     */
     @Override
     public void draw(Canvas canvas) {
         if (listOfIndex!=null && !(listOfIndex.isEmpty())) {
@@ -37,23 +55,31 @@ public class Attack extends ICWarsAction{
 
             cursor.setAnchor(canvas.getPosition().add(1,0));
             cursor.draw(canvas);
-
-
         }
     }
 
 
-
-
+    /**
+     * Méthode qui retourne le nom de l'action
+     * @return
+     */
     @Override
     public String getName(){
         return "(A)ttack";
     }
 
+    /**
+     * Méthode qui retourne la clé du clavier associée à l'action
+     * @return
+     */
     @Override
     public int getKey(){return Keyboard.A;}
 
-    private ArrayList<Integer> findIndexOfUnits(){
+    /**
+     * Méthode qui retourne la liste des index des unités enemies.
+     * @return
+     */
+    private ArrayList<Integer> getListOfIndexOfEnemyUnit(){
         ArrayList <Integer> listOfUnits;
         ICWarsActor.ICWarsTeamSide teamSide = this.getUnit().getTeamSide();
         ICWarsActor.ICWarsTeamSide targetTeamSide;
@@ -70,9 +96,16 @@ public class Attack extends ICWarsAction{
         return listOfUnits;
     }
 
+    /**
+     * Méthode qui exécute l'action de l'unité
+     * @param dt intervalle de temps
+     * @param player joueur qui exécute l'action
+     * @param keyboard le clavier sur lequel on va actionner les touches.
+     */
     @Override
     public  void doAction(float dt, ICWarsPlayer player , Keyboard keyboard) {
-        listOfIndex = findIndexOfUnits();
+        listOfIndex = getListOfIndexOfEnemyUnit();
+        if (targetIndexInIndexList > listOfIndex.size()-1){targetIndexInIndexList=0;}
 
         Button key;
         key = keyboard.get(Keyboard.TAB);
@@ -119,14 +152,9 @@ public class Attack extends ICWarsAction{
                 player.centerCamera();
                 player.setCurrentPlayerState(ICWarsPlayer.PlayerState.NORMAL);
             }
-
         }
     }
 
 
-
-
-
-
-
+    //Fin de la classe Attack
 }

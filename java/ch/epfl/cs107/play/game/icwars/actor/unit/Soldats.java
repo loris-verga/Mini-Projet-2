@@ -12,13 +12,18 @@ import java.util.List;
 
 public class Soldats extends Unit {
 
+    //camp du soldat
     private ICWarsTeamSide teamSide;
-
+    //liste d'actions associées au soldat
     private ArrayList<ICWarsAction> listOfActions;
 
-    private Attack attack;
-    private Wait wait;
 
+    /**
+     * Constructeur de la classe soldat
+     * @param areaOwner area associée au soldat
+     * @param position position du soldat
+     * @param teamSide camp du soldat
+     */
     public Soldats(Area areaOwner, DiscreteCoordinates position, ICWarsTeamSide teamSide){
         super(teamSide, areaOwner, position,5.f, 2);
         this.teamSide = teamSide;
@@ -31,25 +36,33 @@ public class Soldats extends Unit {
         }
 
         listOfActions = new ArrayList<>();
-        attack = new Attack(areaOwner, this);
-        listOfActions.add(attack);
-        wait = new Wait(areaOwner, this);
-        listOfActions.add(wait);
+        listOfActions.add(new Attack(areaOwner, this));
+        listOfActions.add(new Wait(areaOwner, this));
 
 
     }
 
-
+    /**
+     * Méthode getName nécessaire à l'affichage du nom de l'unité
+     * @return
+     */
     public String getName(){
-        //return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlySoldier" : "icwars/enemySoldier";
         return "Soldier";
     }
 
+    /**
+     * Méthode getDamage: retourne le nombre de dégâts que peut infliger l'unité à chaque coup
+     * @return
+     */
     @Override
     public float getDamage(){
         return 2.f;
     }
 
+    /**
+     * Retourne la liste d'action associée au soldat
+     * @return
+     */
     @Override
     public ArrayList<ICWarsAction> getListOfActions(){
         return listOfActions;

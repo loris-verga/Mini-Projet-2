@@ -104,7 +104,6 @@ public class ICWarsInfoPanel implements Graphics {
         cellTypeText.setRelativeTransform(textTransform);
         cellTypeText.setText(cellType.typeToString());
         cellTypeText.draw(canvas);
-
         cellDefenseText.setText("Def: " + cellType.getDefenseStars());
         cellDefenseText.setRelativeTransform(textTransform);
         cellDefenseText.draw(canvas);

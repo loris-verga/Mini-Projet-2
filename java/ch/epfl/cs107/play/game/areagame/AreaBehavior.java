@@ -72,7 +72,8 @@ public abstract class AreaBehavior implements Interactable.Listener, Interactor.
     protected void setCell(int x,int y, Cell cell) {
     	cells[x][y] = cell;
     }
-    
+
+    //TODO remettre en protected
     protected Cell getCell(int x, int y) {
     	return cells[x][y];
     }
@@ -242,6 +243,8 @@ public abstract class AreaBehavior implements Interactable.Listener, Interactor.
         public List<DiscreteCoordinates> getCurrentCells() {
             return Collections.singletonList(coordinates);
         }
+
+
 
     }
 }

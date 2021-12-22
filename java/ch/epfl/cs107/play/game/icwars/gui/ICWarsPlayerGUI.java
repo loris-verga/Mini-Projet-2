@@ -14,19 +14,36 @@ public class ICWarsPlayerGUI implements Graphics {
     private ICWarsActionsPanel icWarsActionPanel;
     private ICWarsInfoPanel icWarsInfoPanel;
 
+    /**
+     * Constructeur de la classe
+     * @param cameraScaleFactor
+     * @param player
+     */
     public ICWarsPlayerGUI(float cameraScaleFactor, ICWarsPlayer player){
         this.player = player;
-        icWarsInfoPanel = new ICWarsInfoPanel(cameraScaleFactor);
-        icWarsActionPanel = new ICWarsActionsPanel(cameraScaleFactor);
+        icWarsInfoPanel = new ICWarsInfoPanel(13.f);
+        icWarsActionPanel = new ICWarsActionsPanel(13.f);
 
     }
 
-
+    /**
+     * Sélectionne l'unit
+     * @param unit
+     */
     public void setSelectedUnit(Unit unit){
         selectedUnit = unit;
     }
 
+    /**
+     * met l'unité dans info panel
+     * @param unit
+     */
     public void setUnitInfoPanel(Unit unit){icWarsInfoPanel.setUnit(unit);}
+
+    /**
+     * met le type de cellule dans l'info panel
+     * @param cellType
+     */
     public void setCellInfoPanel(ICWarsBehavior.ICWarsCellType cellType){icWarsInfoPanel.setCurrentCell(cellType);}
 
     @Override

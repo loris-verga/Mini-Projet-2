@@ -195,7 +195,7 @@ public class RealPlayer extends ICWarsPlayer {
 
     @Override
     public boolean takeCellSpace() {
-        return true;
+        return false;
     }
 
     @Override
@@ -240,7 +240,7 @@ public class RealPlayer extends ICWarsPlayer {
             if (getCurrentPlayerState()==PlayerState.SELECT_CELL || getCurrentPlayerState()==PlayerState.NORMAL){
                 playerGUI.setUnitInfoPanel(unit);
             }
-            if (getCurrentPlayerState()==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.markAsUsed==false){
+            if (getCurrentPlayerState()==PlayerState.SELECT_CELL && unit.getTeamSide().equals(getTeamSide()) && unit.getMarkAsUsed()==false){
                 for (int i = 0; i < listOfUnits.size(); ++i) {
                     if (unit == listOfUnits.get(i)) {
                         selectUnit(i);

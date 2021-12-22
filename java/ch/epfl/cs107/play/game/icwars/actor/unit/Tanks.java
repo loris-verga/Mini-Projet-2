@@ -15,10 +15,9 @@ public class Tanks extends Unit {
     //Un tank a un camp allié ou ennemi
     private ICWarsTeamSide teamSide;
 
+    //Liste d'action associée au tank
     private ArrayList <ICWarsAction> listOfActions;
 
-    //todo I added this
-    private Attack attack;
 
     /**
      * Constructeur de la classe Tank
@@ -42,24 +41,30 @@ public class Tanks extends Unit {
         listOfActions.add(new Attack(areaOwner, this));
         listOfActions.add(new Wait(areaOwner, this));
 
-        //todo I added this
-        attack = new Attack(areaOwner, this);
-
-
     }
 
 
-
+    /**
+     * Méthode getName : sert à afficher le nom de l'unité
+     * @return
+     */
     public String getName(){
-        //return this.teamSide.equals(ICWarsTeamSide.ALLY) ? "icwars/friendlyTank" : "icwars/enemyTank";
         return "Tank";
     }
 
+    /**
+     * Méthode getDamage : retourne le nombre de dégâts que peut infliger l'unité à chaque coup
+     * @return
+     */
     @Override
     public float getDamage(){
         return 7.f;
     }
 
+    /**
+     * Retourne la liste d'action associée au soldat
+     * @return
+     */
     @Override
     public ArrayList<ICWarsAction> getListOfActions(){
         return listOfActions;

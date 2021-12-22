@@ -3,6 +3,8 @@ package ch.epfl.cs107.play.game.icwars.area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icwars.actor.players.RealPlayer;
+import ch.epfl.cs107.play.game.icwars.actor.unit.Soldats;
 import ch.epfl.cs107.play.game.icwars.handler.ICWarsInteractionVisitor;
 import ch.epfl.cs107.play.window.Window;
 
@@ -12,6 +14,8 @@ import ch.epfl.cs107.play.window.Window;
  * Cette classe sert à gérer le comportement d'une area.
  */
 public class ICWarsBehavior extends AreaBehavior {
+
+
 
 
     /**
@@ -96,6 +100,7 @@ public class ICWarsBehavior extends AreaBehavior {
     }
 
 
+
     /**
      * Classe ICWarsCell
      * Définit les cellules des aires de jeu que l'on utilise dans le jeu ICWars
@@ -104,6 +109,7 @@ public class ICWarsBehavior extends AreaBehavior {
 
         /// Type of the cell following the enum
         private final ICWarsCellType type;
+
 
 
         /**
@@ -128,28 +134,17 @@ public class ICWarsBehavior extends AreaBehavior {
          * @return true ou false, selon si l'on peut ou non entrer dans la cellule.
          */
         @Override
-        protected boolean canEnter(Interactable entity){
-            /*
-            /TODO
-            On doit définir ici les conditions pour lesquelles une cellule refuserait son accès.
-            Cet accès va probablement être restreint selon le nombre d'étoile de la cellule (ou de l'acteur qui l'occupe?)
-            Cela a à voir également avec le fait qu'un acteur peut prendre l'espace
-            => Revoir la fonction takeCellSpace
-
-
-
-
-
-            Update(4.12.2021) https://piazza.com/class/ktijhp746sr283?cid=570
-
-             */
-            if (false) {
-                return false;
+        protected boolean canEnter(Interactable entity) {
+            if (entity.takeCellSpace()) {
+                for (Interactable anEntity : entities) {
+                    if (anEntity.getCurrentCells().equals(this.getCurrentCells())) {
+                        if (anEntity.takeCellSpace()) {
+                            return false;
+                        }
+                    }
+                }
             }
-            else{
-                //J'ai défini pour le moment que la méthode renvoie true de base.
-                return true;
-            }
+            return true;
         }
 
         /**
