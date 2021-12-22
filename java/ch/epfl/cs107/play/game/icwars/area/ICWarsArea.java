@@ -13,34 +13,103 @@ import java.util.ArrayList;
 
 public abstract class ICWarsArea extends Area {
 
-    //Behavior associé à l'aire, gère le comportement de l'aire
     private ICWarsBehavior behavior;
 
-    //Liste des unités de l'aire
     private ArrayList<Unit> listOfUnitsInTheArea = new ArrayList<Unit>();
 
-    /**
-     * Permet d'ajouter des unités à la liste d'unité de l'aire
-     * @param unit
-     */
-    public void addUnitArea(Unit unit){
-        listOfUnitsInTheArea.add(unit);
-    }
+    public void addUnitArea(Unit unit){listOfUnitsInTheArea.add(unit);}
 
-    /**
-     * Permet d'enlever des unités à la liste d'unité de l'aire
-     * @param unit
-     */
     public void removeUnitArea(Unit unit){listOfUnitsInTheArea.remove(unit);}
 
-    /**
-     * Retourne une liste d'unité qui se trouvent dans un rayon autour d'une position
-     * @param fromX
-     * @param fromY
-     * @param radius
-     * @param victimTeamSide
-     * @return
-     */
+    public boolean enemyDefeated(ICWarsActor.ICWarsTeamSide teamSide){
+        boolean test = true;
+            for(Unit unit : listOfUnitsInTheArea){
+                if (unit.getTeamSide() != teamSide){test = false;}
+            }
+        return test;
+    }
+
+    public boolean isPositionTaken(DiscreteCoordinates coordinates){
+        for (int i = 0; i<listOfUnitsInTheArea.size(); ++i){
+            Unit unit = listOfUnitsInTheArea.get(i);
+            if (unit.getCurrentCells().get(0).equals(coordinates)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int findIndexOfLowestHpUnit(ArrayList<Integer> listOfIndex){
+        float minHpValue = listOfUnitsInTheArea.get(listOfIndex.get(0)).getHp();
+        Unit unitWithLowestHp = listOfUnitsInTheArea.get(listOfIndex.get(0));
+        for (Integer indexInIndexList :listOfIndex){
+            float hpOfUnit = listOfUnitsInTheArea.get(listOfIndex.get(indexInIndexList)).getHp();
+            if (hpOfUnit < minHpValue){
+                minHpValue = hpOfUnit;
+                unitWithLowestHp = listOfUnitsInTheArea.get(listOfIndex.get(indexInIndexList));
+            }
+        }
+    return listOfUnitsInTheArea.indexOf(unitWithLowestHp);
+    }
+
+    public DiscreteCoordinates findClosestTarget(float coordX, float coordY, ICWarsActor.ICWarsTeamSide myUnitTeamSide){
+        ICWarsActor.ICWarsTeamSide targetTeamSide;
+        if (myUnitTeamSide == ICWarsActor.ICWarsTeamSide.ALLY){targetTeamSide = ICWarsActor.ICWarsTeamSide.ENEMY;}
+        else {targetTeamSide = ICWarsActor.ICWarsTeamSide.ALLY;}
+        float minDistance;
+        int ClosestTargetIndex;
+        ArrayList <Unit> listOfPossibleTarget = new ArrayList<>();
+        for (Unit possibleTarget: listOfUnitsInTheArea){
+            if (possibleTarget.getTeamSide().equals(targetTeamSide)){
+                listOfPossibleTarget.add(possibleTarget);
+            }
+        }
+
+        ClosestTargetIndex = listOfUnitsInTheArea.indexOf(listOfPossibleTarget.get(0));
+        float x = listOfPossibleTarget.get(0).getPosition().x;
+        float y = listOfPossibleTarget.get(0).getPosition().y;
+        minDistance = (float) Math.sqrt(Math.pow(x-coordX,2) + Math.pow(y-coordY , 2));
+        for (int i = 1 ; i < listOfPossibleTarget.size() ; i++){
+            Unit possibleClosestTarget = listOfPossibleTarget.get(i);
+            x = possibleClosestTarget.getPosition().x;
+            y = possibleClosestTarget.getPosition().y;
+            float distance = (float) Math.sqrt(Math.pow(x-coordX,2) + Math.pow(y-coordY , 2));
+            if (minDistance > distance ){
+                minDistance = distance;
+                ClosestTargetIndex = listOfUnitsInTheArea.indexOf(possibleClosestTarget);
+            }
+        }
+        listOfPossibleTarget.clear();
+        int closestX = (int) listOfUnitsInTheArea.get(ClosestTargetIndex).getPosition().x;
+        int closestY = (int) listOfUnitsInTheArea.get(ClosestTargetIndex).getPosition().y;
+        return new DiscreteCoordinates(closestX, closestY);
+    }
+
+
+    public DiscreteCoordinates FindMoveClosestToTarget(Unit selectedUnit ,float myUnitX, float myUnitY, float myUnitRange, float targetX, float targetY){
+        int startingRangeX = (int) (myUnitX - myUnitRange);
+        int startingRangeY = (int) (myUnitY - myUnitRange);
+        int endingRangeX = (int) (myUnitX + myUnitRange);
+        int endingRangeY = (int) (myUnitY + myUnitRange);
+        int minDistance = this.getWidth();
+        DiscreteCoordinates bestPosition = null;
+        if (startingRangeX < 0){startingRangeX=0;}
+        if (startingRangeX < 0){startingRangeY=0;}
+        if (endingRangeX >= this.getWidth()){endingRangeX = this.getWidth();}
+        if (endingRangeY >= this.getHeight()){endingRangeY = this.getHeight();}
+        for(int i = startingRangeX; i < endingRangeX; i++){
+            for(int j = startingRangeY ; j < endingRangeY; j++){
+                float distance = (float) Math.sqrt(Math.pow(targetX - i ,2) + Math.pow(targetY - j, 2));
+                //todo add valid conditions
+                if ((minDistance > distance && !this.isPositionTaken(new DiscreteCoordinates(i,j)))){
+                    minDistance = (int) distance;
+                    bestPosition = new DiscreteCoordinates(i , j);
+                }
+            }
+        }
+        return bestPosition;
+    }
+
     public ArrayList <Integer> getListOfIndexOfUnitsInRange(float fromX, float fromY, float radius, ICWarsActor.ICWarsTeamSide victimTeamSide){
         ArrayList <Integer> listOfIndex = new ArrayList<>();
         for (int i = 0; i<listOfUnitsInTheArea.size(); ++i){
@@ -89,34 +158,25 @@ public abstract class ICWarsArea extends Area {
     }
 
 
-    /**
-     * Retourne le nombre d'étoiles de défense de la cellule sur laquelle se trouve une unité
-     * @param indexOfUnit
-     * @return
-     */
+
+    public float getUnitHp(int indexOfUnit){
+        Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
+        return unit.getHp();
+    }
+
     public int getDefenseStarsUnit(int indexOfUnit){
         Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
         return unit.getDefenseStarsOnCell();
     }
 
-    /**
-     * Permet d'infliger des dégâts à une unité
-     * @param indexOfUnit
-     * @param damage
-     */
     public void attackUnit(int indexOfUnit, float damage){
         Unit unit = listOfUnitsInTheArea.get(indexOfUnit);
         unit.sufferAmountOfDamage(damage);
     }
 
-    /**
-     * Permet de centrer la caméra sur une unité
-     * @param indexOfUnit
-     */
+
     public void centerCameraOnUnit(int indexOfUnit){
         this.setViewCandidate(listOfUnitsInTheArea.get(indexOfUnit));
     }
-
-
 
 }

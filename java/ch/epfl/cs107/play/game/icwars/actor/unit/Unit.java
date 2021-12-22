@@ -22,28 +22,21 @@ import java.util.Queue;
 
 public abstract class Unit extends ICWarsActor implements Interactor {
 
-    //Un range est associé à notre unité
     private ICWarsRange range;
 
     //La valeur d'unitHp doit être positive et a une valeur maximale
     private float unitHp;
     private float unitHpMax;
 
-    //Un sprite est associé à l'unité pour qu'on puisse la dessiner (draw)
     private Sprite sprite;
 
     //Le rayon de déplacement de l'unité (par tour)
     private int movementRadius;
 
-    //Indique si l'unité est utilisée
-    private boolean markAsUsed;
+    public boolean markAsUsed;
 
-    //Gestionnaire pour les interactions entre les cellules et les unités
     private ICWarsUnitInteractionHandler handler;
-    //Nombre d'étoiles que possède la cellule sur laquelle se trouve l'unité
     private int defenseStarsOnCell;
-
-    //Aire spécifique associée à l'unité
     private ICWarsArea area;
 
     /**
@@ -71,8 +64,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         this.range = initRange(coordinates.x, coordinates.y, movementRadius, widthArea, heightArea);
 
         area = (ICWarsArea) areaOwner;
-        //todo I have chnaged this so that I can remove units from area
-        //ICWarsArea area = (ICWarsArea) areaOwner;
         area.addUnitArea(this);
 
         handler = new ICWarsUnitInteractionHandler();
@@ -104,6 +95,7 @@ public abstract class Unit extends ICWarsActor implements Interactor {
      * @return une array qui contient des tableaux qui contiennent les coordonnées x et y des tableaux
      */
     public ArrayList<int[]> getNodesCoords(int fromX,int  fromY, int radius, int maxX, int maxY){
+        Area test =getOwnerArea();
         ArrayList<int[]> list = new ArrayList<int[]>();
         for (int coordX = 0; coordX<maxX; ++ coordX){
             for (int coordY = 0; coordY<maxY; ++ coordY){
@@ -222,7 +214,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         boolean dead = false;
         if (unitHp == 0.f){
             dead = true;
-            //todo I added this read above 3
             area.removeUnitArea(this);
         }
         return dead;
@@ -272,7 +263,6 @@ public abstract class Unit extends ICWarsActor implements Interactor {
     @Override
     public void draw(Canvas canvas){
         sprite.draw(canvas);
-        //todo not sure
             for (ICWarsAction action: getListOfActions()) {
                 action.draw(canvas);
             }
@@ -311,18 +301,11 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         }
     }
 
-    /**
-     * Retourne le rayon dans lequel une unité peut se déplacer
-     * @return
-     */
     public int getMovementRadius(){
         return movementRadius;
     }
 
-    /**
-     * Retourne le nombre d'étoiles de défense que la cellule sur laquelle se trouve l'unité
-     * @return
-     */
+
     public int getDefenseStarsOnCell(){
         return defenseStarsOnCell;
     }
@@ -347,13 +330,8 @@ public abstract class Unit extends ICWarsActor implements Interactor {
         return false;
     }
 
-    /**
-     * Retourne de la liste d'action de l'unité.
-     * @return
-     */
-    public abstract ArrayList<ICWarsAction> getListOfActions();
 
-    public boolean getMarkAsUsed(){return markAsUsed;}
+    public abstract ArrayList<ICWarsAction> getListOfActions();
 
 
 
