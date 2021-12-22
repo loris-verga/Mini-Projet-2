@@ -98,7 +98,7 @@ public class AIPlayer extends ICWarsPlayer {
     private boolean stillHaveUsableUnits(){
         boolean test = false;
             for(Unit unit : listOfUnits){
-                if (unit.markAsUsed==false){test=true;}
+                if (unit.getMarkAsUsed()==false){test=true;}
             }
         return test;
     }
@@ -129,7 +129,7 @@ public class AIPlayer extends ICWarsPlayer {
             case SELECT_CELL: {
                 if (indexOfSelectedUnit<listOfUnits.size()) {
                     selectUnit(indexOfSelectedUnit);
-                    if (selectedUnit.markAsUsed==true){
+                    if (selectedUnit.getMarkAsUsed()==true){
                         indexOfSelectedUnit+=1;
                         selectUnit(indexOfSelectedUnit);
                     }
@@ -145,6 +145,7 @@ public class AIPlayer extends ICWarsPlayer {
                 DiscreteCoordinates myUnitNewCoordinates = area.FindMoveClosestToTarget(selectedUnit , selectedUnit.getPosition().x, selectedUnit.getPosition().y, selectedUnit.getMovementRadius(), targetCoordinates.x, targetCoordinates.y );
                 if(waitFor(0.5f, deltaTime)){
                     if (selectedUnit.changePosition(myUnitNewCoordinates)) {
+                        this.changePosition(new DiscreteCoordinates((int)selectedUnit.getPosition().x, (int)selectedUnit.getPosition().y));
                         setCurrentPlayerState(PlayerState.ACTION_SELECT);
                     }
                 }

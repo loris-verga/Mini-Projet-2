@@ -33,7 +33,7 @@ public abstract class Unit extends ICWarsActor implements Interactor {
     //Le rayon de déplacement de l'unité (par tour)
     private int movementRadius;
 
-    public boolean markAsUsed;
+    private boolean markAsUsed;
 
     private ICWarsUnitInteractionHandler handler;
     private int defenseStarsOnCell;
@@ -332,6 +332,8 @@ public abstract class Unit extends ICWarsActor implements Interactor {
 
 
     public abstract ArrayList<ICWarsAction> getListOfActions();
+
+    public boolean getMarkAsUsed(){return markAsUsed;}
 
 
 
