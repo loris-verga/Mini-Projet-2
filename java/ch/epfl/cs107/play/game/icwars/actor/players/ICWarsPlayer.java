@@ -28,6 +28,8 @@ public abstract class ICWarsPlayer extends ICWarsActor implements Interactor{
 
     private PlayerState currentPlayerState;
 
+    private static boolean wantsViewInteractionState;
+
     /**
      *  constructeur de la classe ICWarsPlayer
      * @param teamSide : la faction du joueur
